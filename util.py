@@ -25,10 +25,8 @@ def resume_train(args, output_folder, model, model_optimizer, classifiers, class
     checkpoint = torch.load(args.resume_train)
     start_epoch_num = checkpoint["epoch_num"]
     
-    # Little hack to solve naming issues, due for example to DataParallel
     model_state_dict = checkpoint["model_state_dict"]
-    renamed_state_dict = {k: v for k, v in zip(model.state_dict().keys(), model_state_dict.values())}
-    model.load_state_dict(renamed_state_dict)
+    model.load_state_dict(model_state_dict)
     
     model = model.to(args.device)
     model_optimizer.load_state_dict(checkpoint["optimizer_state_dict"])

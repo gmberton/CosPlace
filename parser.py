@@ -18,10 +18,11 @@ def parse_arguments():
     parser.add_argument("--fc_output_dim", type=int, default=512,
                         help="Output dimension of final fully connected layer")
     # Training parameters
-    parser.add_argument("--use_amp16", action="store_true", help="_")
+    parser.add_argument("--use_amp16", action="store_true",
+                        help="use Automatic Mixed Precision")
     parser.add_argument("--augmentation_device", type=str, default="cuda",
                         choices=["cuda", "cpu"],
-                        help="On which device to run data augmentation")
+                        help="on which device to run data augmentation")
     parser.add_argument("--batch_size", type=int, default=32, help="_")
     parser.add_argument("--epochs_num", type=int, default=50, help="_")
     parser.add_argument("--iterations_per_epoch", type=int, default=10000, help="_")
@@ -39,13 +40,15 @@ def parse_arguments():
     parser.add_argument("--positive_dist_threshold", type=int, default=25,
                         help="distance in meters for a prediction to be considered a positive")
     # Resume parameters
-    parser.add_argument("--resume_train", type=str, default=None, help="_")
-    parser.add_argument("--resume_model", type=str, default=None, help="_")
+    parser.add_argument("--resume_train", type=str, default=None,
+                        help="path to checkpoint to resume, e.g. logs/.../last_checkpoint.pth")
+    parser.add_argument("--resume_model", type=str, default=None,
+                        help="path to model to resume, e.g. logs/.../best_model.pth")
     # Other parameters
     parser.add_argument("--device", type=str, default="cuda",
                         choices=["cuda", "cpu"], help="_")
     parser.add_argument("--seed", type=int, default=0, help="_")
-    parser.add_argument("-nw", "--num_workers", type=int, default=8, help="_")
+    parser.add_argument("--num_workers", type=int, default=8, help="_")
     # Paths parameters
     parser.add_argument("--dataset_folder", type=str, default=None,
                         help="path of the folder with train/val/test sets")
