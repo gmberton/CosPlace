@@ -27,11 +27,9 @@ model = network.GeoLocalizationNet(args.backbone, args.fc_output_dim)
 logging.info(f"There are {torch.cuda.device_count()} GPUs and {multiprocessing.cpu_count()} CPUs.")
 
 if args.resume_model != None:
-    # Little hack to solve naming issues, due for example to DataParallel (it adds "module.")
     logging.debug(f"Loading model from {args.resume_model}")
     model_state_dict = torch.load(args.resume_model)
-    renamed_state_dict = {k: v for k, v in zip(model.state_dict().keys(), model_state_dict.values())}
-    model.load_state_dict(renamed_state_dict)
+    model.load_state_dict(model_state_dict)
 
 model = model.to(args.device)
 

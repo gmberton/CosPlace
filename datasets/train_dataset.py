@@ -41,9 +41,9 @@ class TrainDataset(torch.utils.data.Dataset):
         self.dataset_folder = dataset_folder
         self.augmentation_device = args.augmentation_device
         
-        filename = f"cache/datasets/sf_xl_M{M}_N{N}_mipc{min_images_per_class}.torch"
+        filename = f"cache/sf_xl_M{M}_N{N}_mipc{min_images_per_class}.torch"
         if not os.path.exists(filename):
-            os.makedirs("cache/datasets", exist_ok=True)
+            os.makedirs("cache", exist_ok=True)
             logging.info(f"Cached dataset {filename} does not exist, I'll create it now.")
             self.initialize(dataset_folder, M, N, alpha, L, min_images_per_class, filename)
         elif current_group == 0:
@@ -110,6 +110,7 @@ class TrainDataset(torch.utils.data.Dataset):
         
         logging.debug("For each image, get its UTM east, UTM north and heading from its path")
         images_metadatas = [p.split("@") for p in images_paths]
+        # field 1 is UTM east, field 2 is UTM north, field 9 is heading
         utmeast_utmnorth_heading = [(m[1], m[2], m[9]) for m in images_metadatas]
         utmeast_utmnorth_heading = np.array(utmeast_utmnorth_heading).astype(np.float)
         
