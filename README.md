@@ -2,13 +2,31 @@
 # Rethinking Visual Geo-localization for Large-Scale Applications
 This is the official repository for the CVPR 2022 paper "Rethinking Visual Geo-localization for Large-Scale Applications".
 The paper presents a new dataset called San Francisco eXtra Large (SF-XL, go [_here_](https://forms.gle/wpyDzhDyoWLQygAT9) to download it), and a highly scalable training method (called CosPlace), which allows to reach SOTA results with compact descriptors.
-Results are reproducible with .
 
 ## Train
-Code is coming soon (before mid-April).
+After downloading the SF-XL dataset, simply run 
+
+`$ python3 train.py --dataset_folder path/to/sf-xl/processed`
+
+the script automatically splits SF-XL in CosPlace Groups, and saves the resulting object in the folder `cache`.
+By default a ResNet-18 with descriptors dimensionality 512 is used, which fits in less than 4GB of VRAM.
+
+To change the backbone or the output descriptors dimensionality simply run 
+
+`$ python3 train.py --dataset_folder path/to/sf-xl/processed --backbone resnet50 --fc_output_dim 128`
+
+You can also speed up your training with Automatic Mixed Precision (note that all results/statistics from the paper did not use AMP)
+
+`$ python3 train.py --dataset_folder path/to/sf-xl/processed --use_amp16`
 
 
 ## Test
+You can test a trained model as such
+
+`$ python3 eval.py --dataset_folder path/to/sf-xl/processed --backbone resnet50 --fc_output_dim 128 --resume_model path/to/best_model.pth`
+
+You can download plenty of trained models below.
+
 ## Model Zoo
 
 <details>
