@@ -1,5 +1,8 @@
 
 # Rethinking Visual Geo-localization for Large-Scale Applications
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/rethinking-visual-geo-localization-for-large/visual-place-recognition-on-pittsburgh-30k)](https://paperswithcode.com/sota/visual-place-recognition-on-pittsburgh-30k?p=rethinking-visual-geo-localization-for-large)
+
 This is the official repository for the CVPR 2022 paper [Rethinking Visual Geo-localization for Large-Scale Applications](https://arxiv.org/abs/2204.02287).
 The paper presents a new dataset called San Francisco eXtra Large (SF-XL, go [_here_](https://forms.gle/wpyDzhDyoWLQygAT9) to download it), and a highly scalable training method (called CosPlace), which allows to reach SOTA results with compact descriptors.
 
@@ -19,6 +22,8 @@ You can also speed up your training with Automatic Mixed Precision (note that al
 
 `$ python3 train.py --dataset_folder path/to/sf-xl/processed --use_amp16`
 
+#### Reproducibility
+Results are fully reproducible, and we followed deep learning's best practices (average over multiple runs for the main results, validation and hyperparameter search on the val set).
 
 ## Test
 You can test a trained model as such
