@@ -122,24 +122,21 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
         
         if not args.use_amp16:
             descriptors = model(images)
-            del images
             output = classifiers[current_group_num](descriptors, targets)
             loss = criterion(output, targets)
             loss.backward()
             epoch_losses = np.append(epoch_losses, loss.item())
-            del loss, output
+            del loss, output, images
             model_optimizer.step()
             classifiers_optimizers[current_group_num].step()
-        
-        if args.use_amp16:
+        else:  # Use AMP 16
             with torch.cuda.amp.autocast():
                 descriptors = model(images)
-                del images
                 output = classifiers[current_group_num](descriptors, targets)
                 loss = criterion(output, targets)
             scaler.scale(loss).backward()
             epoch_losses = np.append(epoch_losses, loss.item())
-            del loss, output
+            del loss, output, images
             scaler.step(model_optimizer)
             scaler.step(classifiers_optimizers[current_group_num])
             scaler.update()
