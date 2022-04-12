@@ -73,9 +73,9 @@ else:
 
 #### Train / evaluation loop
 logging.info("Start training ...")
-logging.info(f"There are {len(groups[0])} classes for the first group, " + 
+logging.info(f"There are {len(groups[0])} classes for the first group, " +
              f"each epoch has {args.iterations_per_epoch} iterations " +
-             f"with batch_size {args.batch_size}, therefore the model sees each class (on average) " + 
+             f"with batch_size {args.batch_size}, therefore the model sees each class (on average) " +
              f"{args.iterations_per_epoch * args.batch_size / len(groups[0]):.1f} times per epoch")
 
 
@@ -156,7 +156,7 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
     is_best = recalls[0] > best_val_recall1
     best_val_recall1 = max(recalls[0], best_val_recall1)
     # Save checkpoint, which contains all training parameters
-    util.save_checkpoint({"epoch_num": epoch_num + 1, 
+    util.save_checkpoint({"epoch_num": epoch_num + 1,
         "model_state_dict": model.state_dict(),
         "optimizer_state_dict": model_optimizer.state_dict(),
         "classifiers_state_dict": [c.state_dict() for c in classifiers],
