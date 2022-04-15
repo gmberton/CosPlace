@@ -16,9 +16,9 @@ The images below represent respectively:
 2) a visualization of how CosPlace Groups (read datasets) are formed
 3) results with CosPlace vs other methods on Pitts250k (CosPlace trained on SF-XL, others on Pitts30k)
 <p float="left">
-  <img src="https://github.com/gmberton/gmberton.github.io/blob/main/images/SF-XL%20map.jpg" height="200" />
-  <img src="https://github.com/gmberton/gmberton.github.io/blob/main/images/map_groups.png" height="200" /> 
-  <img src="https://github.com/gmberton/gmberton.github.io/blob/main/images/backbones_pitts250k_main.png" height="200" />
+  <img src="https://github.com/gmberton/gmberton.github.io/blob/main/images/SF-XL%20map.jpg" height="150" />
+  <img src="https://github.com/gmberton/gmberton.github.io/blob/main/images/map_groups.png" height="150" /> 
+  <img src="https://github.com/gmberton/gmberton.github.io/blob/main/images/backbones_pitts250k_main.png" height="150" />
 </p>
 
 
@@ -43,6 +43,10 @@ Run `$ python3 train.py -h` to have a look at all the hyperparameters that you c
 
 #### Reproducibility
 Results from the paper are fully reproducible, and we followed deep learning's best practices (average over multiple runs for the main results, validation and hyperparameter search on the val set).
+
+#### Limitations
+Given that we use only 8 out of 50 groups, the code in datasets/train_dataset.py only allows for groups with _L=1_ to be used for training, making the code more readable.
+Therefore you can use up to _NxNx1_ groups, which is up to 25 with _N=5_, as we use in the paper.
 
 ## Test
 You can test a trained model as such
