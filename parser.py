@@ -3,7 +3,7 @@ import os
 import argparse
 
 
-def parse_arguments():
+def parse_arguments(is_training=True):
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     # CosPlace Groups parameters
     parser.add_argument("--M", type=int, default=10, help="_")
@@ -68,13 +68,14 @@ def parse_arguments():
     if not os.path.exists(args.dataset_folder):
         raise FileNotFoundError(f"Folder {args.dataset_folder} does not exist")
     
-    args.train_set_folder = os.path.join(args.dataset_folder, "train")
-    if not os.path.exists(args.train_set_folder):
-        raise FileNotFoundError(f"Folder {args.train_set_folder} does not exist")
-    
-    args.val_set_folder = os.path.join(args.dataset_folder, "val")
-    if not os.path.exists(args.val_set_folder):
-        raise FileNotFoundError(f"Folder {args.val_set_folder} does not exist")
+    if is_training:
+        args.train_set_folder = os.path.join(args.dataset_folder, "train")
+        if not os.path.exists(args.train_set_folder):
+            raise FileNotFoundError(f"Folder {args.train_set_folder} does not exist")
+        
+        args.val_set_folder = os.path.join(args.dataset_folder, "val")
+        if not os.path.exists(args.val_set_folder):
+            raise FileNotFoundError(f"Folder {args.val_set_folder} does not exist")
     
     args.test_set_folder = os.path.join(args.dataset_folder, "test")
     if not os.path.exists(args.test_set_folder):
