@@ -12,7 +12,7 @@ import commons
 from model import network
 from datasets.test_dataset import TestDataset
 
-args = parser.parse_arguments()
+args = parser.parse_arguments(is_training=False)
 start_time = datetime.now()
 output_folder = f"logs/{args.save_dir}/{start_time.strftime('%Y-%m-%d_%H-%M-%S')}"
 commons.make_deterministic(args.seed)
@@ -33,7 +33,7 @@ if args.resume_model != None:
 
 model = model.to(args.device)
 
-test_ds = TestDataset(args.dataset_folder, queries_folder="queries_v1",
+test_ds = TestDataset(args.test_set_folder, queries_folder="queries_v1",
                       positive_dist_threshold=args.positive_dist_threshold)
 
 recalls, recalls_str = test.test(args, test_ds, model)
