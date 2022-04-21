@@ -27,9 +27,12 @@ model = network.GeoLocalizationNet(args.backbone, args.fc_output_dim)
 logging.info(f"There are {torch.cuda.device_count()} GPUs and {multiprocessing.cpu_count()} CPUs.")
 
 if args.resume_model != None:
-    logging.debug(f"Loading model from {args.resume_model}")
+    logging.info(f"Loading model from {args.resume_model}")
     model_state_dict = torch.load(args.resume_model)
     model.load_state_dict(model_state_dict)
+else:
+    logging.info("WARNING: You didn't provide a path to resume the model (--resume_model parameter). " +
+                 "Evaluation will be computed using randomly initialized weights.")
 
 model = model.to(args.device)
 
