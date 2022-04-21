@@ -170,7 +170,7 @@ model.load_state_dict(best_model_state_dict)
 
 logging.info(f"Now testing on the test set: {test_ds}")
 recalls, recalls_str = test.test(args, test_ds, model)
-logging.info(f"{test_ds}: {recalls_str[:20]}")
+logging.info(f"{test_ds}: {recalls_str}")
 
 logging.info("Experiment finished (without any errors)")
 
