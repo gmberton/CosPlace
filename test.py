@@ -8,6 +8,10 @@ from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Subset
 
 
+# Compute R@1, R@5, R@10, R@20
+RECALL_VALUES = [1, 5, 10, 20]
+
+
 def test(args, eval_ds, model):
     """Compute descriptors of the given dataset and compute the recalls."""
     
@@ -40,21 +44,20 @@ def test(args, eval_ds, model):
     faiss_index = faiss.IndexFlatL2(args.fc_output_dim)
     faiss_index.add(database_descriptors)
     del database_descriptors, all_descriptors
-    args.recall_values = [1, 5, 10, 20]
+    
     logging.debug("Calculating recalls")
-    _, predictions = faiss_index.search(queries_descriptors, max(args.recall_values))
+    _, predictions = faiss_index.search(queries_descriptors, max(RECALL_VALUES))
     
     #### For each query, check if the predictions are correct
     positives_per_query = eval_ds.get_positives()
-    # args.recall_values by default is [1, 5, 10, 20]
-    recalls = np.zeros(len(args.recall_values))
-    for query_index, pred in enumerate(predictions):
-        for i, n in enumerate(args.recall_values):
-            if np.any(np.in1d(pred[:n], positives_per_query[query_index])):
+    recalls = np.zeros(len(RECALL_VALUES))
+    for query_index, preds in enumerate(predictions):
+        for i, n in enumerate(RECALL_VALUES):
+            if np.any(np.in1d(preds[:n], positives_per_query[query_index])):
                 recalls[i:] += 1
                 break
     # Divide by queries_num and multiply by 100, so the recalls are in percentages
     recalls = recalls / eval_ds.queries_num * 100
-    recalls_str = ", ".join([f"R@{val}: {rec:.1f}" for val, rec in zip(args.recall_values, recalls)])
+    recalls_str = ", ".join([f"R@{val}: {rec:.1f}" for val, rec in zip(RECALL_VALUES, recalls)])
     return recalls, recalls_str
 
