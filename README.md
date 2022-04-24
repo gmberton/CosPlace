@@ -139,5 +139,5 @@ Here is the bibtex to cite our paper
 ```
 
 ## Issues
-If you find some problems in our code, or have any advice or questions, feel free to open an issue or send an email to berton.gabri@gmail.com
+If you questions regarding our code or dataset, feel free to open an issue or send an email to berton.gabri@gmail.com
 
