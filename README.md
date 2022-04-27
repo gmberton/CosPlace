@@ -127,6 +127,15 @@ If you want to use these weights in your own code, make sure that the model is t
   </tr>
 </table>
 
+## Issues
+If you questions regarding our code or dataset, feel free to open an issue or send an email to berton.gabri@gmail.com
+
+## Acknowledgements
+Parts of this repo are inspired by the following repositories:
+- [CosFace implementation in PyTorch](https://github.com/MuggleWang/CosFace_pytorch/blob/master/layer.py)
+- [CNN Image Retrieval in PyTorch](https://github.com/filipradenovic/cnnimageretrieval-pytorch) (for the GeM layer)
+- [Visual Geo-localization benchmark](https://github.com/gmberton/deep-visual-geo-localization-benchmark) (for the evaluation / test code)
+
 ## Cite
 Here is the bibtex to cite our paper
 ```
@@ -137,7 +146,3 @@ Here is the bibtex to cite our paper
   month = {June}, 
   year = {2022}, }
 ```
-
-## Issues
-If you questions regarding our code or dataset, feel free to open an issue or send an email to berton.gabri@gmail.com
-
