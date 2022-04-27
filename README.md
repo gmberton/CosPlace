@@ -127,6 +127,8 @@ If you want to use these weights in your own code, make sure that the model is t
   </tr>
 </table>
 
+Or you can download all models at once at [this link](https://drive.google.com/drive/folders/1WzSLnv05FLm-XqP5DxR5nXaaixH23uvV?usp=sharing)
+
 ## Issues
 If you questions regarding our code or dataset, feel free to open an issue or send an email to berton.gabri@gmail.com
 
