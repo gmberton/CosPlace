@@ -41,6 +41,8 @@ def get_backbone(backbone_name):
             backbone = torchvision.models.resnet50(pretrained=True)
         elif backbone_name == "resnet101":
             backbone = torchvision.models.resnet101(pretrained=True)
+        elif backbone_name == "resnet152":
+            backbone = torchvision.models.resnet152(pretrained=True)
         
         for name, child in backbone.named_children():
             if name == "layer3":  # Freeze layers before conv_3
