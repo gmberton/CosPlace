@@ -50,7 +50,7 @@ The SF-XL dataset is about 1 TB.
 For training only a subset of the images is used, and you can use this subset for training, which is only 360 GB.
 If this is still too heavy for you (e.g. if you're using Colab), but you would like to run CosPlace, we also created a small version of SF-XL, which is only 5 GB.
 Obviously, using the small version will lead to lower results, and it should be used only for debugging / exploration purposes.
-More information on the dataset and lightweight version are on the README that you can fond on the dataset download page (go [_here_](https://forms.gle/wpyDzhDyoWLQygAT9) to find it).
+More information on the dataset and lightweight version are on the README that you can find on the dataset download page (go [_here_](https://forms.gle/wpyDzhDyoWLQygAT9) to find it).
 
 #### Reproducibility
 Results from the paper are fully reproducible, and we followed deep learning's best practices (average over multiple runs for the main results, validation/early stopping and hyperparameter search on the val set).
