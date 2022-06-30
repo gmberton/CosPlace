@@ -55,7 +55,8 @@ class TrainDataset(torch.utils.data.Dataset):
         if current_group >= len(classes_per_group):
             raise ValueError(f"With this configuration there are only {len(classes_per_group)} " +
                              f"groups, therefore I can't create the {current_group}th group. " +
-                             "You should reduce the number of groups in --groups_num")
+                             "You should reduce the number of groups by setting for example " +
+                             f"'--groups_num {current_group}'")
         self.classes_ids = classes_per_group[current_group]
         
         if self.augmentation_device == "cpu":
