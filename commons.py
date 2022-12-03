@@ -1,6 +1,10 @@
 
+import os
+import sys
 import torch
 import random
+import logging
+import traceback
 import numpy as np
 
 
@@ -21,7 +25,7 @@ class InfiniteDataLoader(torch.utils.data.DataLoader):
         return batch
 
 
-def make_deterministic(seed=0):
+def make_deterministic(seed: int = 0):
     """Make results deterministic. If seed == -1, do not make deterministic.
         Running your script in a deterministic way might slow it down.
         Note that for some packages (eg: sklearn's PCA) this function is not enough.
@@ -37,8 +41,8 @@ def make_deterministic(seed=0):
     torch.backends.cudnn.benchmark = False
 
 
-def setup_logging(output_folder, exist_ok=False, console="debug",
-                  info_filename="info.log", debug_filename="debug.log"):
+def setup_logging(output_folder: str, exist_ok: bool = False, console: str = "debug",
+                  info_filename: str = "info.log", debug_filename: str = "debug.log"):
     """Set up logging files and console output.
     Creates one file for INFO logs and one for DEBUG logs.
     Args:
@@ -51,10 +55,6 @@ def setup_logging(output_folder, exist_ok=False, console="debug",
         info_filename (str): the name of the info file. if None, don't create info file
         debug_filename (str): the name of the debug file. if None, don't create debug file
     """
-    import os
-    import sys
-    import logging
-    import traceback
     if not exist_ok and os.path.exists(output_folder):
         raise FileExistsError(f"{output_folder} already exists!")
     os.makedirs(output_folder, exist_ok=True)
