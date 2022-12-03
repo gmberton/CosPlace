@@ -62,22 +62,24 @@ def setup_logging(output_folder, exist_ok=False, console="debug",
     logger = logging.getLogger('')
     logger.setLevel(logging.DEBUG)
     
-    if info_filename != None:
+    if info_filename is not None:
         info_file_handler = logging.FileHandler(f'{output_folder}/{info_filename}')
         info_file_handler.setLevel(logging.INFO)
         info_file_handler.setFormatter(base_formatter)
         logger.addHandler(info_file_handler)
     
-    if debug_filename != None:
+    if debug_filename is not None:
         debug_file_handler = logging.FileHandler(f'{output_folder}/{debug_filename}')
         debug_file_handler.setLevel(logging.DEBUG)
         debug_file_handler.setFormatter(base_formatter)
         logger.addHandler(debug_file_handler)
     
-    if console != None:
+    if console is not None:
         console_handler = logging.StreamHandler()
-        if console == "debug": console_handler.setLevel(logging.DEBUG)
-        if console == "info":  console_handler.setLevel(logging.INFO)
+        if console == "debug":
+            console_handler.setLevel(logging.DEBUG)
+        if console == "info":
+            console_handler.setLevel(logging.INFO)
         console_handler.setFormatter(base_formatter)
         logger.addHandler(console_handler)
     
@@ -85,4 +87,3 @@ def setup_logging(output_folder, exist_ok=False, console="debug",
         logger.info("\n" + "".join(traceback.format_exception(type, value, tb)))
         logging.info("Experiment finished (with some errors)")
     sys.excepthook = my_handler
-

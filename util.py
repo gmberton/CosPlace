@@ -31,8 +31,10 @@ def resume_train(args, output_folder, model, model_optimizer, classifiers, class
     model = model.to(args.device)
     model_optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
     
-    assert args.groups_num ==  len(classifiers) ==  len(classifiers_optimizers) ==  len(checkpoint["classifiers_state_dict"]) ==  len(checkpoint["optimizers_state_dict"]), \
-        f"{args.groups_num} , {len(classifiers)} , {len(classifiers_optimizers)} , {len(checkpoint['classifiers_state_dict'])} , {len(checkpoint['optimizers_state_dict'])}"
+    assert args.groups_num == len(classifiers) == len(classifiers_optimizers) == \
+        len(checkpoint["classifiers_state_dict"]) == len(checkpoint["optimizers_state_dict"]), \
+        (f"{args.groups_num}, {len(classifiers)}, {len(classifiers_optimizers)}, "
+         f"{len(checkpoint['classifiers_state_dict'])}, {len(checkpoint['optimizers_state_dict'])}")
     
     for c, sd in zip(classifiers, checkpoint["classifiers_state_dict"]):
         # Move classifiers to GPU before loading their optimizers
@@ -50,4 +52,3 @@ def resume_train(args, output_folder, model, model_optimizer, classifiers, class
     shutil.copy(args.resume_train.replace("last_checkpoint.pth", "best_model.pth"), output_folder)
     
     return model, model_optimizer, classifiers, classifiers_optimizers, best_val_recall1, start_epoch_num
-

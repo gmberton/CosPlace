@@ -57,7 +57,7 @@ def parse_arguments(is_training=True):
     
     args = parser.parse_args()
     
-    if args.dataset_folder == None:
+    if args.dataset_folder is None:
         try:
             args.dataset_folder = os.environ['SF_XL_PROCESSED_FOLDER']
         except KeyError:
@@ -82,4 +82,3 @@ def parse_arguments(is_training=True):
         raise FileNotFoundError(f"Folder {args.test_set_folder} does not exist")
     
     return args
-

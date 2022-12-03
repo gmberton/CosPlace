@@ -14,24 +14,27 @@ class GeM(nn.Module):
         super().__init__()
         self.p = Parameter(torch.ones(1)*p)
         self.eps = eps
+    
     def forward(self, x):
         return gem(x, p=self.p, eps=self.eps)
+    
     def __repr__(self):
-        return self.__class__.__name__ + '(' + 'p=' + '{:.4f}'.format(self.p.data.tolist()[0]) + ', ' + 'eps=' + str(self.eps) + ')'
+        return f"{self.__class__.__name__}(p={self.p.data.tolist()[0]:.4f}, eps={self.eps})"
 
 
 class Flatten(torch.nn.Module):
     def __init__(self):
         super().__init__()
+    
     def forward(self, x):
         assert x.shape[2] == x.shape[3] == 1, f"{x.shape[2]} != {x.shape[3]} != 1"
-        return x[:,:,0,0]
+        return x[:, :, 0, 0]
 
 
 class L2Norm(nn.Module):
     def __init__(self, dim=1):
         super().__init__()
         self.dim = dim
+    
     def forward(self, x):
         return F.normalize(x, p=2.0, dim=self.dim)
-
