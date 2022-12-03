@@ -4,15 +4,17 @@ import torch
 import logging
 import numpy as np
 from tqdm import tqdm
-from torch.utils.data import DataLoader
+from typing import Tuple
+from argparse import Namespace
 from torch.utils.data.dataset import Subset
+from torch.utils.data import DataLoader, Dataset
 
 
 # Compute R@1, R@5, R@10, R@20
 RECALL_VALUES = [1, 5, 10, 20]
 
 
-def test(args, eval_ds, model):
+def test(args: Namespace, eval_ds: Dataset, model: torch.nn.Module) -> Tuple[np.ndarray, str]:
     """Compute descriptors of the given dataset and compute the recalls."""
     
     model = model.eval()

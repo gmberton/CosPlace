@@ -2,16 +2,20 @@
 import torch
 import shutil
 import logging
+from typing import Type, List
+from argparse import Namespace
+from cosface_loss import MarginCosineProduct
 
 
-def move_to_device(optimizer, device):
+def move_to_device(optimizer: Type[torch.optim.Optimizer], device: str):
     for state in optimizer.state.values():
         for k, v in state.items():
             if torch.is_tensor(v):
                 state[k] = v.to(device)
 
 
-def save_checkpoint(state, is_best, output_folder, ckpt_filename="last_checkpoint.pth"):
+def save_checkpoint(state: dict, is_best: bool, output_folder: str,
+                    ckpt_filename: str = "last_checkpoint.pth"):
     # TODO it would be better to move weights to cpu before saving
     checkpoint_path = f"{output_folder}/{ckpt_filename}"
     torch.save(state, checkpoint_path)
@@ -19,7 +23,9 @@ def save_checkpoint(state, is_best, output_folder, ckpt_filename="last_checkpoin
         torch.save(state["model_state_dict"], f"{output_folder}/best_model.pth")
 
 
-def resume_train(args, output_folder, model, model_optimizer, classifiers, classifiers_optimizers):
+def resume_train(args: Namespace, output_folder: str, model: torch.nn.Module,
+                 model_optimizer: Type[torch.optim.Optimizer], classifiers: List[MarginCosineProduct],
+                 classifiers_optimizers: List[Type[torch.optim.Optimizer]]):
     """Load model, optimizer, and other training parameters"""
     logging.info(f"Loading checkpoint: {args.resume_train}")
     checkpoint = torch.load(args.resume_train)

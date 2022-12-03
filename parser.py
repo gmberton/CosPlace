@@ -3,7 +3,7 @@ import os
 import argparse
 
 
-def parse_arguments(is_training=True):
+def parse_arguments(is_training: bool = True):
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     # CosPlace Groups parameters
     parser.add_argument("--M", type=int, default=10, help="_")
