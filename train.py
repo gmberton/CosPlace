@@ -7,7 +7,6 @@ from tqdm import tqdm
 import multiprocessing
 from datetime import datetime
 import torchvision.transforms as T
-torch.backends.cudnn.benchmark= True  # Provides a speedup
 
 import test
 import util
@@ -18,6 +17,8 @@ import augmentations
 from model import network
 from datasets.test_dataset import TestDataset
 from datasets.train_dataset import TrainDataset
+
+torch.backends.cudnn.benchmark = True  # Provides a speedup
 
 args = parser.parse_arguments()
 start_time = datetime.now()
@@ -33,7 +34,7 @@ model = network.GeoLocalizationNet(args.backbone, args.fc_output_dim)
 
 logging.info(f"There are {torch.cuda.device_count()} GPUs and {multiprocessing.cpu_count()} CPUs.")
 
-if args.resume_model != None:
+if args.resume_model is not None:
     logging.debug(f"Loading model from {args.resume_model}")
     model_state_dict = torch.load(args.resume_model)
     model.load_state_dict(model_state_dict)
@@ -104,12 +105,12 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
     
     dataloader = commons.InfiniteDataLoader(groups[current_group_num], num_workers=args.num_workers,
                                             batch_size=args.batch_size, shuffle=True,
-                                            pin_memory=(args.device=="cuda"), drop_last=True)
+                                            pin_memory=(args.device == "cuda"), drop_last=True)
     
     dataloader_iterator = iter(dataloader)
     model = model.train()
     
-    epoch_losses = np.zeros((0,1), dtype=np.float32)
+    epoch_losses = np.zeros((0, 1), dtype=np.float32)
     for iteration in tqdm(range(args.iterations_per_epoch), ncols=100):
         images, targets, _ = next(dataloader_iterator)
         images, targets = images.to(args.device), targets.to(args.device)
@@ -145,7 +146,7 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
     util.move_to_device(classifiers_optimizers[current_group_num], "cpu")
     
     logging.debug(f"Epoch {epoch_num:02d} in {str(datetime.now() - epoch_start_time)[:-7]}, "
-                 f"loss = {epoch_losses.mean():.4f}")
+                  f"loss = {epoch_losses.mean():.4f}")
     
     #### Evaluation
     recalls, recalls_str = test.test(args, val_ds, model)
@@ -153,7 +154,8 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
     is_best = recalls[0] > best_val_recall1
     best_val_recall1 = max(recalls[0], best_val_recall1)
     # Save checkpoint, which contains all training parameters
-    util.save_checkpoint({"epoch_num": epoch_num + 1,
+    util.save_checkpoint({
+        "epoch_num": epoch_num + 1,
         "model_state_dict": model.state_dict(),
         "optimizer_state_dict": model_optimizer.state_dict(),
         "classifiers_state_dict": [c.state_dict() for c in classifiers],
@@ -173,4 +175,3 @@ recalls, recalls_str = test.test(args, test_ds, model)
 logging.info(f"{test_ds}: {recalls_str}")
 
 logging.info("Experiment finished (without any errors)")
-

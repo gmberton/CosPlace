@@ -69,7 +69,6 @@ class TrainDataset(torch.utils.data.Dataset):
                     T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
                 ])
     
-    
     def __getitem__(self, class_num):
         # This function takes as input the class_num instead of the index of
         # the image. This way each class is equally represented during training.
@@ -93,16 +92,13 @@ class TrainDataset(torch.utils.data.Dataset):
         
         return tensor_image, class_num, image_path
     
-    
     def get_images_num(self):
         """Return the number of images within this group."""
         return sum([len(self.images_per_class[c]) for c in self.classes_ids])
     
-    
     def __len__(self):
         """Return the number of classes within this group."""
         return len(self.classes_ids)
-    
     
     @staticmethod
     def initialize(dataset_folder, M, N, alpha, L, min_images_per_class, filename):
@@ -145,7 +141,6 @@ class TrainDataset(torch.utils.data.Dataset):
         
         torch.save((classes_per_group, images_per_class), filename)
     
-    
     @staticmethod
     def get__class_id__group_id(utm_east, utm_north, heading, M, alpha, N, L):
         """Return class_id and group_id for a given point.
@@ -164,4 +159,3 @@ class TrainDataset(torch.utils.data.Dataset):
                     rounded_utm_north % (M * N) // M,
                     rounded_heading % (alpha * L) // alpha)
         return class_id, group_id
-

@@ -17,10 +17,12 @@ class DeviceAgnosticColorJitter(T.ColorJitter):
         assert augmented_images.shape == torch.Size([B, C, H, W])
         return augmented_images
 
+
 class DeviceAgnosticRandomResizedCrop(T.RandomResizedCrop):
     def __init__(self, size, scale):
         """This is the same as T.RandomResizedCrop but it only accepts batches of images and works on GPU"""
         super().__init__(size=size, scale=scale)
+    
     def forward(self, images):
         assert len(images.shape) == 4, f"images should be a batch of images, but it has shape {images.shape}"
         B, C, H, W = images.shape
@@ -55,4 +57,3 @@ if __name__ == "__main__":
     pil_image.show()
     augmented_image_0.show()
     augmented_image_1.show()
-
