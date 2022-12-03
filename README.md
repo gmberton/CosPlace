@@ -56,9 +56,6 @@ More information on the dataset and lightweight version are on the README that y
 Results from the paper are fully reproducible, and we followed deep learning's best practices (average over multiple runs for the main results, validation/early stopping and hyperparameter search on the val set).
 If you are a researcher comparing your work against ours, please make sure to follow these best practices and avoid picking the best model on the test set.
 
-#### Limitations
-Given that we use only 8 out of 50 groups, the code in datasets/train_dataset.py only allows for groups with _L=0_ to be used for training, to keep the code more readable.
-Therefore you can use up to _NxNx1_ groups, which is up to 25 when _N=5_ as in the paper.
 
 ## Test
 You can test a trained model as such

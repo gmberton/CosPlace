@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from torch.nn.parameter import Parameter
 
 
-def gem(x, p=3, eps=1e-6):
+def gem(x, p=torch.ones(1)*3, eps: float = 1e-6):
     return F.avg_pool2d(x.clamp(min=eps).pow(p), (x.size(-2), x.size(-1))).pow(1./p)
 
 
@@ -33,5 +33,5 @@ class L2Norm(nn.Module):
         super().__init__()
         self.dim = dim
     def forward(self, x):
-        return F.normalize(x, p=2, dim=self.dim)
+        return F.normalize(x, p=2.0, dim=self.dim)
 
