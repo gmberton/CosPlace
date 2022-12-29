@@ -8,8 +8,13 @@
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/rethinking-visual-geo-localization-for-large/visual-place-recognition-on-sf-xl-test-v1)](https://paperswithcode.com/sota/visual-place-recognition-on-sf-xl-test-v1?p=rethinking-visual-geo-localization-for-large)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/rethinking-visual-geo-localization-for-large/visual-place-recognition-on-sf-xl-test-v2)](https://paperswithcode.com/sota/visual-place-recognition-on-sf-xl-test-v2?p=rethinking-visual-geo-localization-for-large)
 
-This is the official repository for the CVPR 2022 paper [Rethinking Visual Geo-localization for Large-Scale Applications](https://arxiv.org/abs/2204.02287).
+This is the official pyTorch implementation of the CVPR 2022 paper "Rethinking Visual Geo-localization for Large-Scale Applications".
 The paper presents a new dataset called San Francisco eXtra Large (SF-XL, go [_here_](https://forms.gle/wpyDzhDyoWLQygAT9) to download it), and a highly scalable training method (called CosPlace), which allows to reach SOTA results with compact descriptors.
+
+
+[[CVPR OpenAccess](https://openaccess.thecvf.com/content/CVPR2022/html/Berton_Rethinking_Visual_Geo-Localization_for_Large-Scale_Applications_CVPR_2022_paper.html)] [[ArXiv](https://arxiv.org/abs/2204.02287)] [[Video](https://www.youtube.com/watch?v=oDyL6oVNN3I)] [[BibTex](https://github.com/gmberton/CosPlace#cite)]
+
+
 
 The images below represent respectively:
 1) the map of San Francisco eXtra Large
@@ -146,10 +151,12 @@ Parts of this repo are inspired by the following repositories:
 ## Cite
 Here is the bibtex to cite our paper
 ```
-@inProceedings{Berton_CVPR_2022_cosPlace,
-  author = {Berton, Gabriele and Masone, Carlo and Caputo, Barbara},
-  title = {Rethinking Visual Geo-localization for Large-Scale Applications}, 
-  booktitle = {CVPR},
-  month = {June}, 
-  year = {2022}, }
+@InProceedings{Berton_CVPR_2022_CosPlace,
+    author    = {Berton, Gabriele and Masone, Carlo and Caputo, Barbara},
+    title     = {Rethinking Visual Geo-Localization for Large-Scale Applications},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month     = {June},
+    year      = {2022},
+    pages     = {4878-4888}
+}
 ```
