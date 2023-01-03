@@ -104,6 +104,9 @@ class TrainDataset(torch.utils.data.Dataset):
     def initialize(dataset_folder, M, N, alpha, L, min_images_per_class, filename):
         logging.debug(f"Searching training images in {dataset_folder}")
         
+        if not os.path.exists(dataset_folder):
+            raise FileNotFoundError(f"Folder {dataset_folder} does not exist")
+        
         images_paths = sorted(glob(f"{dataset_folder}/**/*.jpg", recursive=True))
         logging.debug(f"Found {len(images_paths)} images")
         
