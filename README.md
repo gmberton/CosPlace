@@ -38,7 +38,7 @@ By default training is performed with a ResNet-18 with descriptors dimensionalit
 
 To change the backbone or the output descriptors dimensionality simply run 
 
-`$ python3 train.py --dataset_folder path/to/sf-xl/processed --backbone resnet50 --fc_output_dim 128`
+`$ python3 train.py --dataset_folder path/to/sf-xl/processed --backbone ResNet50 --fc_output_dim 128`
 
 You can also speed up your training with Automatic Mixed Precision (note that all results/statistics from the paper did not use AMP)
 
@@ -62,7 +62,7 @@ If you are a researcher comparing your work against ours, please make sure to fo
 ## Test
 You can test a trained model as such
 
-`$ python3 eval.py --dataset_folder path/to/sf-xl/processed --backbone resnet50 --fc_output_dim 128 --resume_model path/to/best_model.pth`
+`$ python3 eval.py --dataset_folder path/to/sf-xl/processed --backbone ResNet50 --fc_output_dim 128 --resume_model path/to/best_model.pth`
 
 You can download plenty of trained models below.
 
