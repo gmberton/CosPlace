@@ -5,7 +5,8 @@ import torch
 from model import network
 
 
-AVAILABLE_MODELS = {
+AVAILABLE_TRAINED_MODELS = {
+    # backbone : list of available fc_output_dim, which is equivalent to descriptors dimensionality
     "VGG16":     [    64, 128, 256, 512],
     "ResNet18":  [32, 64, 128, 256, 512],
     "ResNet50":  [32, 64, 128, 256, 512, 1024, 2048],
@@ -26,15 +27,15 @@ def get_trained_model(backbone : str = "ResNet50", fc_output_dim : int = 2048) -
         model (torch.nn.Module): a trained model.
     """
     print(f"Returning CosPlace model with backbone: {backbone} with features dimension {fc_output_dim}")
-    if backbone not in AVAILABLE_MODELS:
-        raise ValueError(f"Parameter `backbone` is set to {backbone} but it must be one of {list(AVAILABLE_MODELS.keys())}")
+    if backbone not in AVAILABLE_TRAINED_MODELS:
+        raise ValueError(f"Parameter `backbone` is set to {backbone} but it must be one of {list(AVAILABLE_TRAINED_MODELS.keys())}")
     try:
         fc_output_dim = int(fc_output_dim)
     except:
         raise ValueError(f"Parameter `fc_output_dim` must be an integer, but it is set to {fc_output_dim}")
-    if fc_output_dim not in AVAILABLE_MODELS[backbone]:
+    if fc_output_dim not in AVAILABLE_TRAINED_MODELS[backbone]:
         raise ValueError(f"Parameter `fc_output_dim` is set to {fc_output_dim}, but for backbone {backbone} "
-                         f"it must be one of {list(AVAILABLE_MODELS[backbone])}")
+                         f"it must be one of {list(AVAILABLE_TRAINED_MODELS[backbone])}")
     model = network.GeoLocalizationNet(backbone, fc_output_dim)
     model.load_state_dict(
         torch.hub.load_state_dict_from_url(
