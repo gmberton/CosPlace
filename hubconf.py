@@ -14,7 +14,7 @@ AVAILABLE_MODELS = {
 }
 
 
-def get_trained_model(backbone : str = "ResNet18", fc_output_dim : int = 32) -> torch.nn.Module:
+def get_trained_model(backbone : str = "ResNet50", fc_output_dim : int = 2048) -> torch.nn.Module:
     """Return a model trained with CosPlace on San Francisco eXtra Large.
     
     Args:
