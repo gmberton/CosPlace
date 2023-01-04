@@ -38,7 +38,7 @@ def get_trained_model(backbone : str = "ResNet18", fc_output_dim : int = 32) -> 
     model = network.GeoLocalizationNet(backbone, fc_output_dim)
     model.load_state_dict(
         torch.hub.load_state_dict_from_url(
-            f'https://github.com/gmberton/CosPlace/releases/download/v0.1.0/{backbone}_{fc_output_dim}_cosplace.pth',
+            f'https://github.com/gmberton/CosPlace/releases/download/v1.0/{backbone}_{fc_output_dim}_cosplace.pth',
         map_location=torch.device('cpu'))
     )
     return model
