@@ -1,4 +1,3 @@
-
 import os
 import argparse
 
@@ -56,6 +55,8 @@ def parse_arguments(is_training: bool = True):
                         help="name of directory on which to save the logs, under logs/save_dir")
     parser.add_argument("--best_model", type=str, default=None,
                         help="path where best_model.pth file is")                      
+    # Loss parameters
+    parser.add_argument("--loss_function", type=str, default="cosface", choices=["cosface, sphereface, arcface"], help="select which loss to use [cosface, sphereface, arcface]")
     
     args = parser.parse_args()
     

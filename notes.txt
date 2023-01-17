@@ -1,0 +1,3 @@
+17/01:
+1. Added --loss_function parameter in parser.py file
+2. Added sphereface and arcface loss functions implementations to train.py
