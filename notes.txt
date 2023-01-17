@@ -1,3 +1,4 @@
 17/01:
 1. Added --loss_function parameter in parser.py file
 2. Added sphereface and arcface loss functions implementations to train.py
+3. SphereFace: we have swapped (num_class == in_features, feat_dim == out_features) passed to the init function

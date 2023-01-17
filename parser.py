@@ -56,7 +56,7 @@ def parse_arguments(is_training: bool = True):
     parser.add_argument("--best_model", type=str, default=None,
                         help="path where best_model.pth file is")                      
     # Loss parameters
-    parser.add_argument("--loss_function", type=str, default="cosface", choices=["cosface, sphereface, arcface"], help="select which loss to use [cosface, sphereface, arcface]")
+    parser.add_argument("--loss_function", type=str, default="cosface", choices=["cosface, sphereface, arcface, new_cosface"], help="select which loss to use [cosface, sphereface, arcface, new_cosface]")
     
     args = parser.parse_args()
     
