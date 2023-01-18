@@ -38,7 +38,8 @@ class SphereFace(nn.Module):
             phi_theta = sign * torch.cos(m_theta) - 2. * k
             d_theta = phi_theta - cos_theta
 
+        #logits corresponds to "output" variable in cosface_loss.py 
         logits = self.s * (cos_theta + d_theta)
-        loss = F.cross_entropy(logits, y)
+        #loss = F.cross_entropy(logits, y)
 
-        return loss
+        return logits

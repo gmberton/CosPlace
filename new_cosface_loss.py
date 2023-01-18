@@ -15,7 +15,7 @@ class CosFace(nn.Module):
         self.in_features = in_features
         self.s = s
         self.m = m
-        self.w = nn.Parameter(torch.Tensor(out_features, in_features))
+        self.w = nn.Parameter(torch.Tensor(in_features, out_features))
         nn.init.xavier_normal_(self.w)
 
     def forward(self, x, y):
@@ -27,7 +27,8 @@ class CosFace(nn.Module):
             d_theta = torch.zeros_like(cos_theta)
             d_theta.scatter_(1, y.view(-1, 1), -self.m, reduce='add')
 
+        #logits corresponds to "output" variable in cosface_loss.py 
         logits = self.s * (cos_theta + d_theta)
-        loss = F.cross_entropy(logits, y)
+        #loss = F.cross_entropy(logits, y)
 
-        return loss
+        return logits

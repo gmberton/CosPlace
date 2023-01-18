@@ -30,7 +30,8 @@ class ArcFace(nn.Module):
             theta_m.clamp_(1e-5, 3.14159)
             d_theta = torch.cos(theta_m) - cos_theta
 
+        #logits corresponds to "output" variable in cosface_loss.py 
         logits = self.s * (cos_theta + d_theta)
-        loss = F.cross_entropy(logits, y)
+        #loss = F.cross_entropy(logits, y)
 
-        return loss
+        return logits
