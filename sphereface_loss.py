@@ -12,7 +12,7 @@ class SphereFace(nn.Module):
         num_class == in_features
         feat_dim == out_features
     """
-    def __init__(self, num_class, feat_dim, s=30., m=1.5):
+    def __init__(self, feat_dim, num_class, s=30., m=1.5):
         super(SphereFace, self).__init__()
         self.feat_dim = feat_dim
         self.num_class = num_class

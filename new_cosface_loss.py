@@ -9,13 +9,13 @@ class CosFace(nn.Module):
 
        CosFace implementation from: https://github.com/ydwen/opensphere/tree/main/model/head
     """
-    def __init__(self, in_features, out_features, s=64., m=0.35):
+    def __init__(self, feat_dim, num_classes, s=64., m=0.35):
         super(CosFace, self).__init__()
-        self.out_features = out_features
-        self.in_features = in_features
+        self.num_classes = num_classes
+        self.feat_dim = feat_dim
         self.s = s
         self.m = m
-        self.w = nn.Parameter(torch.Tensor(in_features, out_features))
+        self.w = nn.Parameter(torch.Tensor(feat_dim, num_classes))
         nn.init.xavier_normal_(self.w)
 
     def forward(self, x, y):
