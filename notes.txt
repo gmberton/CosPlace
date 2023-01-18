@@ -1,4 +1,26 @@
 17/01:
 1. Added --loss_function parameter in parser.py file
 2. Added sphereface and arcface loss functions implementations to train.py
-3. SphereFace: we have swapped (num_class == in_features, feat_dim == out_features) passed to the init function
+3. SphereFace: we have understood that num_class == out_features, feat_dim == in_features.
+
+18/01: 
+Modifiche possibili:
+1. migliorare domain shift aggiungendo:
+    (Data Augmentation)
+    a. Gaussian blur (per immagini notturne o in movimento)
+       E altre ritenute utili
+    
+    b. Migliorare i crop aggiungendo:
+       aspect ratio oltre che scale e size
+
+    c. Leggere GRL e rubare roba
+       inserirlo dentro aggregation? perché va messo tra layers
+       https://github.com/tadeephuy/GradientReversal
+ 
+2. Comparare backbone differenti
+   vgg16,vgg19,convnext,xception
+
+3. Media dei pesi o cosa strana simile
+ 
+4. Studiarsi una nuova loss function? Provarci?
+ 

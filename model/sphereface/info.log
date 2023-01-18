@@ -1,0 +1,17 @@
+2023-01-18 18:55:24   train_only.py --dataset_folder /content/small --groups_num 1 --epochs_num 3 --batch_size 32 --loss_function sphereface
+2023-01-18 18:55:24   Arguments: Namespace(L=2, M=10, N=5, alpha=30, augmentation_device='cuda', backbone='resnet18', batch_size=32, best_model=None, brightness=0.7, classifiers_lr=0.01, contrast=0.7, dataset_folder='/content/small', device='cuda', epochs_num=3, fc_output_dim=512, groups_num=1, hue=0.5, infer_batch_size=16, iterations_per_epoch=10000, loss_function='sphereface', lr=1e-05, min_images_per_class=10, num_workers=8, positive_dist_threshold=25, random_resized_crop=0.5, resume_model=None, resume_train=None, saturation=0.7, save_dir='default', seed=0, test_set_folder='/content/small/test', train_set_folder='/content/small/train', use_amp16=False, val_set_folder='/content/small/val')
+2023-01-18 18:55:24   The outputs are being saved in AML23-CosPlace/model/results/best_2023-01-18_18-55-24
+2023-01-18 18:55:26   There are 1 GPUs and 12 CPUs.
+2023-01-18 18:55:30   Cached dataset cache/small_M10_N5_mipc10.torch does not exist, I'll create it now.
+2023-01-18 18:55:30   Using 1 groups
+2023-01-18 18:55:30   The 1 groups have respectively the following number of classes [5965]
+2023-01-18 18:55:30   The 1 groups have respectively the following number of images [59650]
+2023-01-18 18:55:30   Start training ...
+2023-01-18 18:55:30   There are 5965 classes for the first group, each epoch has 10000 iterations with batch_size 32, therefore the model sees each class (on average) 53.6 times per epoch
+2023-01-18 18:55:31   Validation set: < val - #q: 7993; #db: 8015 >
+2023-01-18 19:13:48   Epoch 00 in 0:18:17, < val - #q: 7993; #db: 8015 >: R@1: 77.0, R@5: 86.7
+2023-01-18 19:32:02   Epoch 01 in 0:18:13, < val - #q: 7993; #db: 8015 >: R@1: 80.0, R@5: 88.8
+2023-01-18 19:50:16   Epoch 02 in 0:18:13, < val - #q: 7993; #db: 8015 >: R@1: 80.7, R@5: 89.4
+2023-01-18 19:50:16   Trained for 03 epochs, in total in 0:54:52
+2023-01-18 19:50:16   Best model is saved in AML23-CosPlace/model/results/best_2023-01-18_18-55-24/best_model.pth
+2023-01-18 19:50:16   Experiment finished (without any errors)

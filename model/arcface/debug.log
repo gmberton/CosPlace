@@ -1,0 +1,36 @@
+2023-01-18 19:03:26   train_only.py --dataset_folder /content/small --groups_num 1 --epochs_num 3 --batch_size 32 --loss_function arcface
+2023-01-18 19:03:26   Arguments: Namespace(L=2, M=10, N=5, alpha=30, augmentation_device='cuda', backbone='resnet18', batch_size=32, best_model=None, brightness=0.7, classifiers_lr=0.01, contrast=0.7, dataset_folder='/content/small', device='cuda', epochs_num=3, fc_output_dim=512, groups_num=1, hue=0.5, infer_batch_size=16, iterations_per_epoch=10000, loss_function='arcface', lr=1e-05, min_images_per_class=10, num_workers=8, positive_dist_threshold=25, random_resized_crop=0.5, resume_model=None, resume_train=None, saturation=0.7, save_dir='default', seed=0, test_set_folder='/content/small/test', train_set_folder='/content/small/train', use_amp16=False, val_set_folder='/content/small/val')
+2023-01-18 19:03:26   The outputs are being saved in AML23-CosPlace/model/results/best_2023-01-18_19-03-26
+2023-01-18 19:03:27   Train only layer3 and layer4 of the resnet18, freeze the previous ones
+2023-01-18 19:03:27   There are 1 GPUs and 12 CPUs.
+2023-01-18 19:03:31   Cached dataset cache/small_M10_N5_mipc10.torch does not exist, I'll create it now.
+2023-01-18 19:03:31   Searching training images in /content/small/train
+2023-01-18 19:03:32   Found 59650 images
+2023-01-18 19:03:32   For each image, get its UTM east, UTM north and heading from its path
+2023-01-18 19:03:32   For each image, get class and group to which it belongs
+2023-01-18 19:03:32   Group together images belonging to the same class
+2023-01-18 19:03:32   Group together classes belonging to the same group
+2023-01-18 19:03:32   Using 1 groups
+2023-01-18 19:03:32   The 1 groups have respectively the following number of classes [5965]
+2023-01-18 19:03:32   The 1 groups have respectively the following number of images [59650]
+2023-01-18 19:03:32   Start training ...
+2023-01-18 19:03:32   There are 5965 classes for the first group, each epoch has 10000 iterations with batch_size 32, therefore the model sees each class (on average) 53.6 times per epoch
+2023-01-18 19:03:32   Validation set: < val - #q: 7993; #db: 8015 >
+2023-01-18 19:20:29   Epoch 00 in 0:16:56, loss = 38.5652
+2023-01-18 19:20:29   Extracting database descriptors for evaluation/testing
+2023-01-18 19:20:42   Extracting queries descriptors for evaluation/testing using batch size 1
+2023-01-18 19:21:35   Calculating recalls
+2023-01-18 19:21:36   Epoch 00 in 0:18:03, < val - #q: 7993; #db: 8015 >: R@1: 68.5, R@5: 77.7
+2023-01-18 19:38:35   Epoch 01 in 0:16:58, loss = 35.0177
+2023-01-18 19:38:35   Extracting database descriptors for evaluation/testing
+2023-01-18 19:38:48   Extracting queries descriptors for evaluation/testing using batch size 1
+2023-01-18 19:39:41   Calculating recalls
+2023-01-18 19:39:43   Epoch 01 in 0:18:06, < val - #q: 7993; #db: 8015 >: R@1: 74.4, R@5: 82.2
+2023-01-18 19:56:47   Epoch 02 in 0:17:04, loss = 33.4251
+2023-01-18 19:56:47   Extracting database descriptors for evaluation/testing
+2023-01-18 19:57:01   Extracting queries descriptors for evaluation/testing using batch size 1
+2023-01-18 19:57:55   Calculating recalls
+2023-01-18 19:57:56   Epoch 02 in 0:18:13, < val - #q: 7993; #db: 8015 >: R@1: 77.1, R@5: 84.8
+2023-01-18 19:57:57   Trained for 03 epochs, in total in 0:54:31
+2023-01-18 19:57:57   Best model is saved in AML23-CosPlace/model/results/best_2023-01-18_19-03-26/best_model.pth
+2023-01-18 19:57:57   Experiment finished (without any errors)
