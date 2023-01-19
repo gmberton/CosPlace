@@ -35,12 +35,8 @@ model = network.GeoLocalizationNet(args.backbone, args.fc_output_dim)
 
 model = model.to(args.device).train()
 
-queries_folder="queries_v1"
 
-if (args.dataset_folder != "/content/small"):
-    queries_folder = "queries"
-
-test_ds = TestDataset(args.test_set_folder, queries_folder,
+test_ds = TestDataset(args.test_set_folder, queries_folder="queries_v1",
                       positive_dist_threshold=args.positive_dist_threshold)
 logging.info(f"Test set: {test_ds}")
 
