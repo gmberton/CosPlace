@@ -3,6 +3,7 @@ import torch
 import logging
 import torchvision
 from torch import nn
+from GRL import GRL
 
 from model.layers import Flatten, L2Norm, GeM
 
@@ -17,7 +18,7 @@ CHANNELS_NUM_IN_LAST_CONV = {
 
 
 class GeoLocalizationNet(nn.Module):
-    def __init__(self, backbone, fc_output_dim):
+    def __init__(self, backbone, fc_output_dim, grl = False):
         super().__init__()
         self.backbone, features_dim = get_backbone(backbone)
         self.aggregation = nn.Sequential(
@@ -27,9 +28,19 @@ class GeoLocalizationNet(nn.Module):
                 nn.Linear(features_dim, fc_output_dim),
                 L2Norm()
             )
+
+        #Additional step for domain adaptation (using GRL)
+        self.domain_discriminator = None
+        if grl == True:
+            self.domain_discriminator = GRL.get_discriminator(features_dim)
     
-    def forward(self, x):
+    #Gets called by model(images, grl)
+    def forward(self, x, grl = False):
+        #First passes CNN backbone
         x = self.backbone(x)
+        # as seen in adageo, return discriminator part during forward pass
+        if grl == True:
+            return self.domain_discriminator(x)
         x = self.aggregation(x)
         return x
 
