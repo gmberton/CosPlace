@@ -10,7 +10,7 @@ import torchvision.transforms as T
 
 import test
 import util
-import parser
+import our_parser
 import commons
 import cosface_loss
 import augmentations
@@ -20,7 +20,7 @@ from datasets.train_dataset import TrainDataset
 
 torch.backends.cudnn.benchmark = True  # Provides a speedup
 
-args = parser.parse_arguments(is_training=False)
+args = our_parser.parse_arguments(is_training=False)
 start_time = datetime.now()
 output_folder = f"logs/{args.save_dir}/{start_time.strftime('%Y-%m-%d_%H-%M-%S')}"
 best_model = args.best_model #path to best model: "AML23-Cosplace/model/results/best_..."

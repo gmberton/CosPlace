@@ -6,14 +6,14 @@ import multiprocessing
 from datetime import datetime
 
 import test
-import parser
+import our_parser
 import commons
 from model import network
 from datasets.test_dataset import TestDataset
 
 torch.backends.cudnn.benchmark = True  # Provides a speedup
 
-args = parser.parse_arguments(is_training=False)
+args = our_parser.parse_arguments(is_training=False)
 start_time = datetime.now()
 output_folder = f"logs/{args.save_dir}/{start_time.strftime('%Y-%m-%d_%H-%M-%S')}"
 commons.make_deterministic(args.seed)

@@ -1,5 +1,5 @@
 import sys
-import parser
+import our_parser
 import logging
 import commons
 import plots
@@ -11,7 +11,7 @@ from datasets.train_dataset import TrainDataset
 start_time = datetime.now()
 commons.make_deterministic()
 logging.info(" ".join(sys.argv))
-args = parser.parse_arguments()
+args = our_parser.parse_arguments()
 
 
 #### Datasets

@@ -47,6 +47,7 @@ class TrainDataset(torch.utils.data.Dataset):
         if not os.path.exists(filename):
             os.makedirs("cache", exist_ok=True)
             logging.info(f"Cached dataset {filename} does not exist, I'll create it now.")
+            #divides the images by class, and gets the list of classes that belong to the same group, saves them into the filename
             self.initialize(dataset_folder, M, N, alpha, L, min_images_per_class, filename)
         elif current_group == 0:
             logging.info(f"Using cached dataset {filename}")
@@ -89,8 +90,11 @@ class TrainDataset(torch.utils.data.Dataset):
         
         if self.augmentation_device == "cpu":
             tensor_image = self.transform(tensor_image)
+
+        #If the image name contains "NIGHT" --> domain = 1 (night), else domain = 0 (not night)
+        #domain = 1 if "NIGHT" in os.path.basename(image_path) else 0
         
-        return tensor_image, class_num, image_path
+        return tensor_image, class_num, image_path #, domain
     
     def get_images_num(self):
         """Return the number of images within this group."""

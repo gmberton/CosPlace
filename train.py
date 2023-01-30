@@ -10,7 +10,7 @@ import torchvision.transforms as T
 
 import test
 import util
-import parser
+import our_parser
 import commons
 import cosface_loss
 import new_cosface_loss
@@ -23,7 +23,7 @@ from datasets.train_dataset import TrainDataset
 
 torch.backends.cudnn.benchmark = True  # Provides a speedup
 
-args = parser.parse_arguments()
+args = our_parser.parse_arguments()
 start_time = datetime.now()
 output_folder = f"logs/{args.save_dir}/{start_time.strftime('%Y-%m-%d_%H-%M-%S')}"
 commons.make_deterministic(args.seed)

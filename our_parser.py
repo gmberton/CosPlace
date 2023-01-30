@@ -57,7 +57,9 @@ def parse_arguments(is_training: bool = True):
                         help="path where best_model.pth file is")                      
     # Loss parameters
     parser.add_argument("--loss_function", type=str, default="cosface", choices=["cosface", "sphereface", "arcface", "new_cosface"], help="select which loss to use [cosface, sphereface, arcface, new_cosface]")
-    
+    # GRL parameters
+    parser.add_argument("--grl", type=bool, default=False, choices=[True, False], help="insert --grl True if you want to perform Domain Adaptation")
+
     args = parser.parse_args()
     
     if args.dataset_folder is None:
