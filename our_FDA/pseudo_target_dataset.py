@@ -114,7 +114,7 @@ if __name__ == '__main__':
     
     source_dir = "/content/small/train"
     target_dir = "/content/AML23-CosPlace/our_FDA/target"
-    num_steps = 10
+    num_steps = 3
 
     create_pseudo_target_dataset(source_dir, target_dir, steps=num_steps)
 

@@ -31,13 +31,22 @@ class GrlDataset(torch.utils.data.Dataset):
         #Add the 5 target images paths to array
         self.images_paths.append(glob(f"{target_path}/**/*.jpg", recursive=True))
 
+        source_paths = []
+        pseudo_paths = []
+
         #Add source and pseudo-target images paths to array
         for root, dirs, files in os.walk(sf_xs_train_path, topdown=True):
             for i in range(0, len(files), 1): 
                 if '.DS_Store' in files[i]:
                     continue
 
-                self.images_paths.append(os.path.join(root, files[i]))
+                if "NIGHT" in files[i]:
+                    pseudo_paths.append(os.path.join(root, files[i]))
+                else:
+                    source_paths.append(os.path.join(root, files[i]))
+
+        self.images_paths.append(source_paths)
+        self.images_paths.append(source_paths)
                 
         self.transform = T.Compose([
             T.ToTensor(),
@@ -59,6 +68,6 @@ class GrlDataset(torch.utils.data.Dataset):
 
         return tensor, domain
 
-        
+
     def __len__(self):
         return self.length

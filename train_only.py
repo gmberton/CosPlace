@@ -127,15 +127,16 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
                                             pin_memory=(args.device == "cuda"), drop_last=True) if args.grl == True else None
     
     dataloader_iterator = iter(dataloader)
+    domain_adapt_dataloader_iterator = iter(domain_adapt_dataloader)
     model = model.train()
     
     epoch_losses = np.zeros((0, 1), dtype=np.float32)
     for iteration in tqdm(range(args.iterations_per_epoch), ncols=100):
-        images, targets, _, _ = next(dataloader_iterator)
+        images, targets, _ = next(dataloader_iterator)
         images, targets = images.to(args.device), targets.to(args.device)
 
         if (args.grl == True):
-            domain_adapt_images, domain_adapt_labels = next(domain_adapt_dataloader)
+            domain_adapt_images, domain_adapt_labels = next(domain_adapt_dataloader_iterator)
             domain_adapt_images, domain_adapt_labels = domain_adapt_images.to(args.device), domain_adapt_labels.to(args.device)
         
         if args.augmentation_device == "cuda":

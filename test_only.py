@@ -42,6 +42,15 @@ logging.info(f"Test set: {test_ds}")
 
 #### Test best model on test set
 best_model_state_dict = torch.load(best_model)
+
+if args.grl == True:
+        del best_model_state_dict["domain_discriminator.1.weight"]
+        del best_model_state_dict["domain_discriminator.1.bias"]
+        del best_model_state_dict["domain_discriminator.3.weight"]
+        del best_model_state_dict["domain_discriminator.3.bias"]
+        del best_model_state_dict["domain_discriminator.5.weight"]
+        del best_model_state_dict["domain_discriminator.5.bias"]
+
 model.load_state_dict(best_model_state_dict)
 
 logging.info(f"Now testing on the test set: {test_ds}")
