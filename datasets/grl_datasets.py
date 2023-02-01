@@ -15,7 +15,7 @@ def open_image(path):
     return Image.open(path).convert("RGB")
     
 class GrlDataset(torch.utils.data.Dataset):
-    def __init__(self, sf_xs_train_path, target_path):
+    def __init__(self, sf_xs_train_path, target_path, length = 1000000):
         """
         datasets_paths is a list containing the folders which contain the N datasets. (in our case 2 datasets containing source + pseudo, target)
         __len__() returns 1000000, and __getitem__(index) returns a random
@@ -53,7 +53,7 @@ class GrlDataset(torch.utils.data.Dataset):
             T.Resize((512,512)),
             T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
-        self.length = len(self.images_paths)
+        self.length = length
 
 
     def __getitem__(self, index):
