@@ -194,7 +194,7 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
     
     logging.debug(f"Epoch {epoch_num:02d} in {str(datetime.now() - epoch_start_time)[:-7]}, "
                   f"loss = {epoch_losses.mean():.4f}")
-    if args.grl: logging.debug(f"Average GRL epoch loss: {epoch_grl_loss/args.iterations_per_epoch:.4f}")
+    if args.grl: logging.debug(f"Average GRL epoch loss (* alpha = 0.1): {epoch_grl_loss/args.iterations_per_epoch:.4f}")
     
     
     #### Evaluation
