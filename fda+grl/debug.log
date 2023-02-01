@@ -1,0 +1,34 @@
+2023-02-01 10:00:07   train_only.py --dataset_folder /content/small --groups_num 1 --epochs_num 3 --batch_size 32 --loss_function cosface --grl True
+2023-02-01 10:00:07   Arguments: Namespace(L=2, M=10, N=5, alpha=30, augmentation_device='cuda', backbone='resnet18', batch_size=32, best_model=None, brightness=0.7, classifiers_lr=0.01, contrast=0.7, dataset_folder='/content/small', device='cuda', epochs_num=3, fc_output_dim=512, grl=True, groups_num=1, hue=0.5, infer_batch_size=16, iterations_per_epoch=10000, loss_function='cosface', lr=1e-05, min_images_per_class=10, num_workers=8, positive_dist_threshold=25, random_resized_crop=0.5, resume_model=None, resume_train=None, saturation=0.7, save_dir='default', seed=0, test_set_folder='/content/small/test', train_set_folder='/content/small/train', use_amp16=False, val_set_folder='/content/small/val')
+2023-02-01 10:00:07   The outputs are being saved in AML23-CosPlace/model/results/best_2023-02-01_10-00-07
+2023-02-01 10:00:07   Train only layer3 and layer4 of the resnet18, freeze the previous ones
+2023-02-01 10:00:08   There are 1 GPUs and 12 CPUs.
+2023-02-01 10:00:09   Using cached dataset cache/small_M10_N5_mipc10.torch
+2023-02-01 10:00:09   GrlDataset has 3 domain classes
+2023-02-01 10:00:09   Using 1 groups
+2023-02-01 10:00:09   The 1 groups have respectively the following number of classes [5965]
+2023-02-01 10:00:09   The 1 groups have respectively the following number of images [79574]
+2023-02-01 10:00:09   Start training ...
+2023-02-01 10:00:09   There are 5965 classes for the first group, each epoch has 10000 iterations with batch_size 32, therefore the model sees each class (on average) 53.6 times per epoch
+2023-02-01 10:00:10   Validation set: < val - #q: 15986; #db: 8015 >
+2023-02-01 10:25:12   Epoch 00 in 0:25:02, loss = 8.2657
+2023-02-01 10:25:12   Average GRL epoch loss: 0.0574
+2023-02-01 10:25:12   Extracting database descriptors for evaluation/testing
+2023-02-01 10:25:25   Extracting queries descriptors for evaluation/testing using batch size 1
+2023-02-01 10:27:12   Calculating recalls
+2023-02-01 10:27:15   Epoch 00 in 0:27:05, < val - #q: 15986; #db: 8015 >: R@1: 77.3, R@5: 87.5
+2023-02-01 10:52:10   Epoch 01 in 0:24:55, loss = 3.6224
+2023-02-01 10:52:10   Average GRL epoch loss: 0.1164
+2023-02-01 10:52:10   Extracting database descriptors for evaluation/testing
+2023-02-01 10:52:23   Extracting queries descriptors for evaluation/testing using batch size 1
+2023-02-01 10:54:11   Calculating recalls
+2023-02-01 10:54:13   Epoch 01 in 0:26:58, < val - #q: 15986; #db: 8015 >: R@1: 80.8, R@5: 89.3
+2023-02-01 11:19:18   Epoch 02 in 0:25:03, loss = 2.6568
+2023-02-01 11:19:18   Average GRL epoch loss: 0.1756
+2023-02-01 11:19:18   Extracting database descriptors for evaluation/testing
+2023-02-01 11:19:31   Extracting queries descriptors for evaluation/testing using batch size 1
+2023-02-01 11:21:19   Calculating recalls
+2023-02-01 11:21:22   Epoch 02 in 0:27:08, < val - #q: 15986; #db: 8015 >: R@1: 81.9, R@5: 90.0
+2023-02-01 11:21:22   Trained for 03 epochs, in total in 1:21:15
+2023-02-01 11:21:22   Best model is saved in AML23-CosPlace/model/results/best_2023-02-01_10-00-07/best_model.pth
+2023-02-01 11:21:22   Experiment finished (without any errors)
