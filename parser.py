@@ -49,6 +49,12 @@ def parse_arguments(is_training: bool = True):
                         choices=["cuda", "cpu"], help="_")
     parser.add_argument("--seed", type=int, default=0, help="_")
     parser.add_argument("--num_workers", type=int, default=8, help="_")
+    parser.add_argument("--num_preds_to_save", type=int, default=0,
+                        help="At the end of training, save N preds for each query. "
+                        "Try with a small number like 3")
+    parser.add_argument("--save_only_wrong_preds", action="store_true",
+                        help="When saving preds (if num_preds_to_save != 0) save only "
+                        "preds for difficult queries, i.e. with uncorrect first prediction")
     # Paths parameters
     parser.add_argument("--dataset_folder", type=str, default=None,
                         help="path of the folder with train/val/test sets")

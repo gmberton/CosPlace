@@ -22,12 +22,12 @@ torch.backends.cudnn.benchmark = True  # Provides a speedup
 
 args = parser.parse_arguments()
 start_time = datetime.now()
-output_folder = f"logs/{args.save_dir}/{start_time.strftime('%Y-%m-%d_%H-%M-%S')}"
+args.output_folder = f"logs/{args.save_dir}/{start_time.strftime('%Y-%m-%d_%H-%M-%S')}"
 commons.make_deterministic(args.seed)
-commons.setup_logging(output_folder, console="debug")
+commons.setup_logging(args.output_folder, console="debug")
 logging.info(" ".join(sys.argv))
 logging.info(f"Arguments: {args}")
-logging.info(f"The outputs are being saved in {output_folder}")
+logging.info(f"The outputs are being saved in {args.output_folder}")
 
 #### Model
 model = network.GeoLocalizationNet(args.backbone, args.fc_output_dim)
@@ -171,7 +171,7 @@ best_model_state_dict = torch.load(f"{output_folder}/best_model.pth")
 model.load_state_dict(best_model_state_dict)
 
 logging.info(f"Now testing on the test set: {test_ds}")
-recalls, recalls_str = test.test(args, test_ds, model)
+recalls, recalls_str = test.test(args, test_ds, model, args.num_preds_to_save)
 logging.info(f"{test_ds}: {recalls_str}")
 
 logging.info("Experiment finished (without any errors)")
