@@ -14,7 +14,7 @@ import parser
 import commons
 import cosface_loss
 import augmentations
-from model import network
+from cosplace_model import cosplace_network
 from datasets.test_dataset import TestDataset
 from datasets.train_dataset import TrainDataset
 
@@ -30,7 +30,7 @@ logging.info(f"Arguments: {args}")
 logging.info(f"The outputs are being saved in {args.output_folder}")
 
 #### Model
-model = network.GeoLocalizationNet(args.backbone, args.fc_output_dim)
+model = cosplace_network.GeoLocalizationNet(args.backbone, args.fc_output_dim)
 
 logging.info(f"There are {torch.cuda.device_count()} GPUs and {multiprocessing.cpu_count()} CPUs.")
 
@@ -65,7 +65,7 @@ logging.info(f"Test set: {test_ds}")
 #### Resume
 if args.resume_train:
     model, model_optimizer, classifiers, classifiers_optimizers, best_val_recall1, start_epoch_num = \
-        util.resume_train(args, output_folder, model, model_optimizer, classifiers, classifiers_optimizers)
+        util.resume_train(args, args.output_folder, model, model_optimizer, classifiers, classifiers_optimizers)
     model = model.to(args.device)
     epoch_num = start_epoch_num - 1
     logging.info(f"Resuming from epoch {start_epoch_num} with best R@1 {best_val_recall1:.1f} from checkpoint {args.resume_train}")
@@ -161,13 +161,13 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
         "classifiers_state_dict": [c.state_dict() for c in classifiers],
         "optimizers_state_dict": [c.state_dict() for c in classifiers_optimizers],
         "best_val_recall1": best_val_recall1
-    }, is_best, output_folder)
+    }, is_best, args.output_folder)
 
 
 logging.info(f"Trained for {epoch_num+1:02d} epochs, in total in {str(datetime.now() - start_time)[:-7]}")
 
 #### Test best model on test set v1
-best_model_state_dict = torch.load(f"{output_folder}/best_model.pth")
+best_model_state_dict = torch.load(f"{args.output_folder}/best_model.pth")
 model.load_state_dict(best_model_state_dict)
 
 logging.info(f"Now testing on the test set: {test_ds}")

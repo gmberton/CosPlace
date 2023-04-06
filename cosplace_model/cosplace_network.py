@@ -5,7 +5,7 @@ import torchvision
 from torch import nn
 from typing import Tuple
 
-from model.layers import Flatten, L2Norm, GeM
+from cosplace_model.layers import Flatten, L2Norm, GeM
 
 # The number of channels in the last convolutional layer, the one before average pooling
 CHANNELS_NUM_IN_LAST_CONV = {
