@@ -54,8 +54,11 @@ def build_prediction_image(images_paths, preds_correct=None):
         pad_height = (H - image.shape[0] + 1) // 2
         image = np.pad(image, [[pad_height, pad_height], [pad_width, pad_width], [0, 0]], constant_values=1)[:H, :W]
         concat_image[: , i*(W+SPACE) : i*(W+SPACE)+W] = image
-    labels_image = write_labels_to_image(labels)
-    final_image = np.concatenate([labels_image, concat_image])
+    try:
+        labels_image = write_labels_to_image(labels)
+        final_image = np.concatenate([labels_image, concat_image])
+    except OSError:  # Handle error in case of missing PIL ImageFont
+        final_image = concat_image
     final_image = Image.fromarray((final_image*255).astype(np.uint8))
     return final_image
 
