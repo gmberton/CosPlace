@@ -114,7 +114,7 @@ class TrainDataset(torch.utils.data.Dataset):
         images_metadatas = [p.split("@") for p in images_paths]
         # field 1 is UTM east, field 2 is UTM north, field 9 is heading
         utmeast_utmnorth_heading = [(m[1], m[2], m[9]) for m in images_metadatas]
-        utmeast_utmnorth_heading = np.array(utmeast_utmnorth_heading).astype(np.float)
+        utmeast_utmnorth_heading = np.array(utmeast_utmnorth_heading).astype(np.float64)
         
         logging.debug("For each image, get class and group to which it belongs")
         class_id__group_id = [TrainDataset.get__class_id__group_id(*m, M, alpha, N, L)
