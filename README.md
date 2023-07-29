@@ -31,18 +31,18 @@ The images below represent respectively:
 ## Train
 After downloading the SF-XL dataset, simply run 
 
-`$ python3 train.py --dataset_folder path/to/sf-xl/processed`
+`$ python3 train.py --train_set_folder path/to/sf_xl/raw/train/database --val_set_folder path/to/sf_xl/processed/val --test_set_folder path/to/sf_xl/processed/test`
 
 the script automatically splits SF-XL in CosPlace Groups, and saves the resulting object in the folder `cache`.
 By default training is performed with a ResNet-18 with descriptors dimensionality 512 is used, which fits in less than 4GB of VRAM.
 
 To change the backbone or the output descriptors dimensionality simply run 
 
-`$ python3 train.py --dataset_folder path/to/sf-xl/processed --backbone ResNet50 --fc_output_dim 128`
+`$ python3 train.py --backbone ResNet50 --fc_output_dim 128`
 
 You can also speed up your training with Automatic Mixed Precision (note that all results/statistics from the paper did not use AMP)
 
-`$ python3 train.py --dataset_folder path/to/sf-xl/processed --use_amp16`
+`$ python3 train.py --use_amp16`
 
 Run `$ python3 train.py -h` to have a look at all the hyperparameters that you can change. You will find all hyperparameters mentioned in the paper.
 
@@ -62,7 +62,7 @@ If you are a researcher comparing your work against ours, please make sure to fo
 ## Test
 You can test a trained model as such
 
-`$ python3 eval.py --dataset_folder path/to/sf-xl/processed --backbone ResNet50 --fc_output_dim 128 --resume_model path/to/best_model.pth`
+`$ python3 eval.py --backbone ResNet50 --fc_output_dim 128 --resume_model path/to/best_model.pth`
 
 You can download plenty of trained models below.
 

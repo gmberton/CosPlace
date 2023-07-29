@@ -1,5 +1,4 @@
 
-import os
 import argparse
 
 
@@ -56,35 +55,17 @@ def parse_arguments(is_training: bool = True):
                         help="When saving preds (if num_preds_to_save != 0) save only "
                         "preds for difficult queries, i.e. with uncorrect first prediction")
     # Paths parameters
-    parser.add_argument("--dataset_folder", type=str, default=None,
-                        help="path of the folder with train/val/test sets")
+    if is_training:  # train and val sets are needed only for training
+        parser.add_argument("--train_set_folder", type=str, required=True,
+                            help="path of the folder with training images")
+        parser.add_argument("--val_set_folder", type=str, required=True,
+                            help="path of the folder with val images (split in database/queries)")
+    parser.add_argument("--test_set_folder", type=str, required=True,
+                        help="path of the folder with test images (split in database/queries)")
     parser.add_argument("--save_dir", type=str, default="default",
                         help="name of directory on which to save the logs, under logs/save_dir")
     
     args = parser.parse_args()
     
-    if args.dataset_folder is None:
-        try:
-            args.dataset_folder = os.environ['SF_XL_PROCESSED_FOLDER']
-        except KeyError:
-            raise Exception("You should set parameter --dataset_folder or export " +
-                            "the SF_XL_PROCESSED_FOLDER environment variable as such \n" +
-                            "export SF_XL_PROCESSED_FOLDER=/path/to/sf_xl/processed")
-    
-    if not os.path.exists(args.dataset_folder):
-        raise FileNotFoundError(f"Folder {args.dataset_folder} does not exist")
-    
-    if is_training:
-        args.train_set_folder = os.path.join(args.dataset_folder, "train")
-        if not os.path.exists(args.train_set_folder):
-            raise FileNotFoundError(f"Folder {args.train_set_folder} does not exist")
-        
-        args.val_set_folder = os.path.join(args.dataset_folder, "val")
-        if not os.path.exists(args.val_set_folder):
-            raise FileNotFoundError(f"Folder {args.val_set_folder} does not exist")
-    
-    args.test_set_folder = os.path.join(args.dataset_folder, "test")
-    if not os.path.exists(args.test_set_folder):
-        raise FileNotFoundError(f"Folder {args.test_set_folder} does not exist")
-    
     return args
+

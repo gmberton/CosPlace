@@ -10,11 +10,10 @@ from PIL import ImageFile
 import torchvision.transforms as T
 from collections import defaultdict
 
+import datasets.dataset_utils as dataset_utils
+
+
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-
-
-def open_image(path):
-    return Image.open(path).convert("RGB")
 
 
 class TrainDataset(torch.utils.data.Dataset):
@@ -42,7 +41,7 @@ class TrainDataset(torch.utils.data.Dataset):
         self.augmentation_device = args.augmentation_device
         
         # dataset_name should be either "processed", "small" or "raw", if you're using SF-XL
-        dataset_name = os.path.basename(args.dataset_folder)
+        dataset_name = os.path.basename(dataset_folder)
         filename = f"cache/{dataset_name}_M{M}_N{N}_mipc{min_images_per_class}.torch"
         if not os.path.exists(filename):
             os.makedirs("cache", exist_ok=True)
@@ -69,16 +68,20 @@ class TrainDataset(torch.utils.data.Dataset):
                     T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
                 ])
     
+    @staticmethod
+    def open_image(path):
+        return Image.open(path).convert("RGB")
+    
     def __getitem__(self, class_num):
         # This function takes as input the class_num instead of the index of
         # the image. This way each class is equally represented during training.
         
         class_id = self.classes_ids[class_num]
         # Pick a random image among those in this class.
-        image_path = random.choice(self.images_per_class[class_id])
+        image_path = os.path.join(self.dataset_folder, random.choice(self.images_per_class[class_id]))
         
         try:
-            pil_image = open_image(image_path)
+            pil_image = TrainDataset.open_image(image_path)
         except Exception as e:
             logging.info(f"ERROR image {image_path} couldn't be opened, it might be corrupted.")
             raise e
@@ -104,10 +107,7 @@ class TrainDataset(torch.utils.data.Dataset):
     def initialize(dataset_folder, M, N, alpha, L, min_images_per_class, filename):
         logging.debug(f"Searching training images in {dataset_folder}")
         
-        if not os.path.exists(dataset_folder):
-            raise FileNotFoundError(f"Folder {dataset_folder} does not exist")
-        
-        images_paths = sorted(glob(f"{dataset_folder}/**/*.jpg", recursive=True))
+        images_paths = dataset_utils.read_images_paths(dataset_folder)
         logging.debug(f"Found {len(images_paths)} images")
         
         logging.debug("For each image, get its UTM east, UTM north and heading from its path")
