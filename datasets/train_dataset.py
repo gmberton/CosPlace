@@ -4,7 +4,6 @@ import torch
 import random
 import logging
 import numpy as np
-from glob import glob
 from PIL import Image
 from PIL import ImageFile
 import torchvision.transforms as T
