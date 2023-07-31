@@ -23,7 +23,7 @@ class DeviceAgnosticColorJitter(T.ColorJitter):
 class DeviceAgnosticRandomResizedCrop(T.RandomResizedCrop):
     def __init__(self, size: Union[int, Tuple[int, int]], scale: float):
         """This is the same as T.RandomResizedCrop but it only accepts batches of images and works on GPU"""
-        super().__init__(size=size, scale=scale)
+        super().__init__(size=size, scale=scale, antialias=True)
     
     def forward(self, images: torch.Tensor) -> torch.Tensor:
         assert len(images.shape) == 4, f"images should be a batch of images, but it has shape {images.shape}"

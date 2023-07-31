@@ -63,7 +63,7 @@ class TrainDataset(torch.utils.data.Dataset):
                                   contrast=args.contrast,
                                   saturation=args.saturation,
                                   hue=args.hue),
-                    T.RandomResizedCrop([512, 512], scale=[1-args.random_resized_crop, 1]),
+                    T.RandomResizedCrop([512, 512], scale=[1-args.random_resized_crop, 1], antialias=True),
                     T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
                 ])
     
