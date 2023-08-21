@@ -41,7 +41,7 @@ class TrainDataset(torch.utils.data.Dataset):
         
         # dataset_name should be either "processed", "small" or "raw", if you're using SF-XL
         dataset_name = os.path.basename(dataset_folder)
-        filename = f"cache/{dataset_name}_M{M}_N{N}_mipc{min_images_per_class}.torch"
+        filename = f"cache/{dataset_name}_M{M}_N{N}_alpha{alpha}_L{L}_mipc{min_images_per_class}.torch"
         if not os.path.exists(filename):
             os.makedirs("cache", exist_ok=True)
             logging.info(f"Cached dataset {filename} does not exist, I'll create it now.")
