@@ -31,8 +31,7 @@ class TestDataset(data.Dataset):
             self.queries_utms, radius=positive_dist_threshold, return_distance=False
         )
         
-        self.images_paths = [p for p in self.database_paths]
-        self.images_paths += [p for p in self.queries_paths]
+        self.images_paths = self.database_paths + self.queries_paths
         
         self.database_num = len(self.database_paths)
         self.queries_num = len(self.queries_paths)
