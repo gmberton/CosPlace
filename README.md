@@ -34,7 +34,7 @@ After downloading the SF-XL dataset, simply run
 `$ python3 train.py --train_set_folder path/to/sf_xl/raw/train/database --val_set_folder path/to/sf_xl/processed/val --test_set_folder path/to/sf_xl/processed/test`
 
 the script automatically splits SF-XL in CosPlace Groups, and saves the resulting object in the folder `cache`.
-By default training is performed with a ResNet-18 with descriptors dimensionality 512 is used, which fits in less than 4GB of VRAM.
+By default training is performed with a ResNet-18 with descriptors dimensionality 512, which fits in less than 4GB of VRAM.
 
 To change the backbone or the output descriptors dimensionality simply run 
 
