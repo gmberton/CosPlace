@@ -2,3 +2,5 @@
 __pycache__
 logs
 cache
+
+train.sh
