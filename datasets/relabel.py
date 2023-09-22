@@ -158,6 +158,9 @@ class SpatialGrid:
 
     def __next__(self):
         return next(self.grid_iter)
+    
+    def __len__(self):
+        return len(self.grid)
 
 
 class HeatmapAnalyzer:
@@ -201,7 +204,7 @@ class HeatmapAnalyzer:
 
         # Calculate probability density for each sample
         for _, row in tqdm(
-            dataframe.iterrows(), desc="Generating Heapmap", leave=False
+            dataframe.iterrows(), desc="Generating Heapmap", leave=False, total=dataframe.shape[0]
         ):
             x_sample = row["UTM_EAST"]
             y_sample = row["UTM_NORTH"]
@@ -348,12 +351,13 @@ def can_see_centers(samples, centers, max_distance=40, min_distance=5):
         list of bool: List indicating whether each sample can see any of the centers.
     """
     can_see = []
+    filtered_center = []
 
     for center in centers:
         can_see_center = []
         cnt = 0
         for _, sample in tqdm(
-            samples.iterrows(), desc="Generate the can see center", leave=False
+            samples.iterrows(), desc="Generate the can see center", leave=False, total=samples.shape[0]
         ):
             x_sample = sample["UTM_EAST"]
             y_sample = sample["UTM_NORTH"]
@@ -386,8 +390,9 @@ def can_see_centers(samples, centers, max_distance=40, min_distance=5):
 
         if cnt >= 10:
             can_see.append(can_see_center)
+            filtered_center.append(center)
 
-    return can_see
+    return can_see, filtered_center
 
 
 def main():
@@ -402,12 +407,12 @@ def main():
     classes_per_group = defaultdict(set)
     images_per_class = defaultdict(list)
 
-    for idx, cell_data in tqdm(grid_data, desc="Analysis of Heatmap"):
+    for idx, cell_data in tqdm(grid_data, desc="Analysis of Heatmap", total=len(grid_data)):
         boundary = grid_data.get_cell_bound(idx[0], idx[1])
         analyzer.generate_probability_density_heatmap(cell_data, boundary)
         analyzer.plot_heatmap()
         centers = analyzer.find_top_areas_centers(M)
-        can_see = can_see_centers(cell_data, centers, 40)
+        can_see, centers = can_see_centers(cell_data, centers, 40)
         for i in range(len(centers)):
             _class_id = (centers[i][0] // M * M, centers[i][1] // M * M, 0)
             _group_id = (centers[i][0] % (M * N) // M, centers[i][1] % (M * N) // M, 0)
