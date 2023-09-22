@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from collections import defaultdict
 
 
 class SpatialGrid:
@@ -26,7 +27,7 @@ class SpatialGrid:
         self.x: str = "UTM_EAST"
         self.y: str = "UTM_NORTH"
         self.grid: dict = self.create_grid()
-        self.grid_iter = iter(self.grid.values())
+        self.grid_iter = iter(self.grid.items())
 
     def load_data(self) -> pd.DataFrame:
         """
@@ -53,6 +54,7 @@ class SpatialGrid:
         dataframe["HEADING"] = (
             dataframe["HEADING"] - 180
         )  # set the range from -180 to 180
+        dataframe["PATH"] = images_paths
         return dataframe
 
     def create_grid(self) -> dict:
@@ -62,22 +64,19 @@ class SpatialGrid:
         Returns:
             dict: A dictionary where keys are cell coordinates (x, y) and values are DataFrames containing data in each cell.
         """
-        min_x, max_x = self.data[self.x].min(), self.data[self.x].max()
-        min_y, max_y = self.data[self.y].min(), self.data[self.y].max()
+        self.min_x, self.max_x = self.data[self.x].min(), self.data[self.x].max()
+        self.min_y, self.max_y = self.data[self.y].min(), self.data[self.y].max()
 
         # Calculate the number of cells in both x and y directions
-        num_cells_x = int((max_x - min_x) / self.cell_size) + 1
-        num_cells_y = int((max_y - min_y) / self.cell_size) + 1
+        num_cells_x = int((self.max_x - self.min_x) / self.cell_size) + 1
+        num_cells_y = int((self.max_y - self.min_y) / self.cell_size) + 1
 
         grid = {}
 
         print("==> Loading the grids")
         for i in tqdm(range(num_cells_x), desc="generating grid x", leave=True):
             for j in tqdm(range(num_cells_y), desc="generating grid y", leave=False):
-                cell_min_x = min_x + i * self.cell_size
-                cell_max_x = cell_min_x + self.cell_size
-                cell_min_y = min_y + j * self.cell_size
-                cell_max_y = cell_min_y + self.cell_size
+                cell_min_x, cell_max_x, cell_min_y, cell_max_y = self.get_cell_bound(i, j)
 
                 # Extract the subset of data within the current cell
                 cell_data = self.data[
@@ -93,6 +92,23 @@ class SpatialGrid:
                     grid[(i, j)] = cell_data
 
         return grid
+    
+    def get_cell_bound(self, i: int, j: int) -> list:
+        """
+        get the bondary of the cell
+        
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+            
+        Returns:
+            a list of boundary for current cell
+        """
+        cell_min_x = self.min_x + i * self.cell_size
+        cell_max_x = cell_min_x + self.cell_size
+        cell_min_y = self.min_y + j * self.cell_size
+        cell_max_y = cell_min_y + self.cell_size
+        return [cell_min_x, cell_max_x, cell_min_y, cell_max_y]
 
     def get_cell_data(self, cell_x, cell_y) -> pd.DataFrame:
         """
@@ -164,7 +180,7 @@ class HeatmapAnalyzer:
         self.grid_resolution = grid_resolution
         self.probability_density = None
 
-    def generate_probability_density_heatmap(self, dataframe) -> None:
+    def generate_probability_density_heatmap(self, dataframe, boundary) -> None:
         """
         Generate a probability density heatmap for a DataFrame of samples with direction and coordinates.
 
@@ -175,10 +191,7 @@ class HeatmapAnalyzer:
             None (displays the heatmap).
         """
         # Create a grid that covers the cell area
-        self.x_min = dataframe["UTM_EAST"].min()
-        self.x_max = dataframe["UTM_EAST"].max()
-        self.y_min = dataframe["UTM_NORTH"].min()
-        self.y_max = dataframe["UTM_NORTH"].max()
+        self.x_min, self.x_max, self.y_min, self.y_max = boundary
         x_grid = np.arange(self.x_min, self.x_max, self.grid_resolution)
         y_grid = np.arange(self.y_min, self.y_max, self.grid_resolution)
         xx, yy = np.meshgrid(x_grid, y_grid)
@@ -187,7 +200,9 @@ class HeatmapAnalyzer:
         self.probability_density = np.zeros_like(xx)
 
         # Calculate probability density for each sample
-        for _, row in dataframe.iterrows():
+        for _, row in tqdm(
+            dataframe.iterrows(), desc="Generating Heapmap", leave=False
+        ):
             x_sample = row["UTM_EAST"]
             y_sample = row["UTM_NORTH"]
             ca_sample = row["HEADING"]
@@ -231,7 +246,7 @@ class HeatmapAnalyzer:
         plt.title("Probability Density Heatmap")
         plt.show()
 
-    def find_top_n_areas_centers(self, n: int, threshold: float = 50) -> list:
+    def find_top_areas_centers(self, n: int, threshold: float = 50) -> list:
         """
         Find the centers of the top N highest areas in a divided grid of the heatmap.
 
@@ -298,7 +313,7 @@ class HeatmapAnalyzer:
                 "Heatmap not generated. Call generate_probability_density_heatmap() first."
             )
 
-        top_n_centers = self.find_top_n_areas_centers(n)
+        top_n_centers = self.find_top_areas_centers(n)
 
         plt.figure(figsize=(10, 8))
         plt.imshow(
@@ -320,11 +335,87 @@ class HeatmapAnalyzer:
         plt.show()
 
 
+def can_see_centers(samples, centers, max_distance=40, min_distance=5):
+    """
+    Determine if samples can see any of the centers based on location and direction.
+
+    Args:
+        samples (pd.DataFrame): DataFrame containing sample data with 'easting', 'northing', and 'ca' columns.
+        centers (list of tuples): List of (x, y) coordinates of the centers.
+        max_distance (float): Maximum distance for line of sight.
+
+    Returns:
+        list of bool: List indicating whether each sample can see any of the centers.
+    """
+    can_see = []
+
+    for center in centers:
+        can_see_center = []
+        cnt = 0
+        for _, sample in tqdm(
+            samples.iterrows(), desc="Generate the can see center", leave=False
+        ):
+            x_sample = sample["UTM_EAST"]
+            y_sample = sample["UTM_NORTH"]
+            ca_sample = sample["HEADING"]
+
+            sample_can_see = False
+
+            # Calculate distance between sample and center
+            distance = np.sqrt(
+                (center[0] - x_sample) ** 2 + (center[1] - y_sample) ** 2
+            )
+
+            # Calculate angle difference between sample direction and direction to the center
+            angle_diff = np.abs(
+                np.arctan2(center[0] - x_sample, center[1] - y_sample)
+                - math.radians(ca_sample)
+            )
+            angle_diff = min(angle_diff, 360 - angle_diff)
+
+            # Check if the sample can see the center (unobstructed line of sight)
+            if (
+                distance >= min_distance
+                and distance <= max_distance
+                and angle_diff <= np.pi / 4
+            ):
+                sample_can_see = True
+                cnt += 1
+
+            can_see_center.append(sample_can_see)
+
+        if cnt >= 10:
+            can_see.append(can_see_center)
+
+    return can_see
+
+
 def main():
     folder = "/media/dszhang/data/vpr_ws/datasets/SF-XL/processed/train"
+    save_filename = "cache/relabel.torch"
     grid_data = SpatialGrid(folder, 100)
-    for i in grid_data:
-        print(i)
+    analyzer = HeatmapAnalyzer()
+    M = 10
+    N = 10
+    # Classes_per_group is a dict where the key is group_id, and the value
+    # is a list with the class_ids belonging to that group.
+    classes_per_group = defaultdict(set)
+    images_per_class = defaultdict(list)
+
+    for idx, cell_data in tqdm(grid_data, desc="Analysis of Heatmap"):
+        boundary = grid_data.get_cell_bound(idx[0], idx[1])
+        analyzer.generate_probability_density_heatmap(cell_data, boundary)
+        analyzer.plot_heatmap()
+        centers = analyzer.find_top_areas_centers(M)
+        can_see = can_see_centers(cell_data, centers, 40)
+        for i in range(len(centers)):
+            _class_id = (centers[i][0] // M * M, centers[i][1] // M * M, 0)
+            _group_id = (centers[i][0] % (M * N) // M, centers[i][1] % (M * N) // M, 0)
+            classes_per_group[_group_id].add(_class_id)
+            images_per_class[_class_id] = cell_data[can_see[i]]["PATH"]
+
+    classes_per_group = [list(c) for c in classes_per_group.values()]
+    torch.save((classes_per_group, images_per_class), save_filename)
 
 
 if __name__ == "__main__":
