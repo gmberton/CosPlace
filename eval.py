@@ -1,4 +1,3 @@
-
 import sys
 import torch
 import logging
@@ -25,20 +24,27 @@ logging.info(f"The outputs are being saved in {args.output_folder}")
 #### Model
 model = cosplace_network.GeoLocalizationNet(args.backbone, args.fc_output_dim)
 
-logging.info(f"There are {torch.cuda.device_count()} GPUs and {multiprocessing.cpu_count()} CPUs.")
+logging.info(
+    f"There are {torch.cuda.device_count()} GPUs and {multiprocessing.cpu_count()} CPUs."
+)
 
 if args.resume_model is not None:
     logging.info(f"Loading model from {args.resume_model}")
     model_state_dict = torch.load(args.resume_model)
     model.load_state_dict(model_state_dict)
 else:
-    logging.info("WARNING: You didn't provide a path to resume the model (--resume_model parameter). " +
-                 "Evaluation will be computed using randomly initialized weights.")
+    logging.info(
+        "WARNING: You didn't provide a path to resume the model (--resume_model parameter). "
+        + "Evaluation will be computed using randomly initialized weights."
+    )
 
 model = model.to(args.device)
 
-test_ds = TestDataset(args.test_set_folder, queries_folder="queries_v1",
-                      positive_dist_threshold=args.positive_dist_threshold)
+test_ds = TestDataset(
+    args.test_set_folder,
+    queries_folder="queries_v1",
+    positive_dist_threshold=args.positive_dist_threshold,
+)
 
 recalls, recalls_str = test.test(args, test_ds, model, args.num_preds_to_save)
 logging.info(f"{test_ds}: {recalls_str}")
