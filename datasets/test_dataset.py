@@ -10,7 +10,7 @@ import datasets.dataset_utils as dataset_utils
 
 
 class TestDataset(data.Dataset):
-    def __init__(self, dataset_folder, database_folder="database",
+    def __init__(self, args, dataset_folder, database_folder="database",
                  queries_folder="queries", positive_dist_threshold=25):
         self.database_folder = dataset_folder + "/" + database_folder
         self.queries_folder = dataset_folder + "/" + queries_folder
@@ -35,11 +35,15 @@ class TestDataset(data.Dataset):
         
         self.database_num = len(self.database_paths)
         self.queries_num = len(self.queries_paths)
-        
-        self.base_transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        ])
+
+        transforms_list = []
+        if args.resize_test_imgs:
+            transforms_list += [transforms.Resize(args.image_size, antialias=True)]
+        transforms_list += [
+                transforms.ToTensor(),
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            ]
+        self.base_transform = transforms.Compose(transforms_list)
     
     @staticmethod
     def open_image(path):

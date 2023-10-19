@@ -18,16 +18,17 @@ CHANNELS_NUM_IN_LAST_CONV = {
 
 
 class GeoLocalizationNet(nn.Module):
-    def __init__(self, backbone : str, fc_output_dim : int):
+    def __init__(self, backbone : str, fc_output_dim : int, train_all_layers : bool = False):
         """Return a model for GeoLocalization.
         
         Args:
             backbone (str): which torchvision backbone to use. Must be VGG16 or a ResNet.
             fc_output_dim (int): the output dimension of the last fc layer, equivalent to the descriptors dimension.
+            train_all_layers (bool): whether to freeze the first layers of the backbone during training or not.
         """
         super().__init__()
         assert backbone in CHANNELS_NUM_IN_LAST_CONV, f"backbone must be one of {list(CHANNELS_NUM_IN_LAST_CONV.keys())}"
-        self.backbone, features_dim = get_backbone(backbone)
+        self.backbone, features_dim = get_backbone(backbone, train_all_layers)
         self.aggregation = nn.Sequential(
             L2Norm(),
             GeM(),
@@ -54,23 +55,30 @@ def get_pretrained_torchvision_model(backbone_name : str) -> torch.nn.Module:
     return model
 
 
-def get_backbone(backbone_name : str) -> Tuple[torch.nn.Module, int]:
+def get_backbone(backbone_name : str, train_all_layers : bool) -> Tuple[torch.nn.Module, int]:
     backbone = get_pretrained_torchvision_model(backbone_name)
     if backbone_name.startswith("ResNet"):
-        for name, child in backbone.named_children():
-            if name == "layer3":  # Freeze layers before conv_3
-                break
-            for params in child.parameters():
-                params.requires_grad = False
-        logging.debug(f"Train only layer3 and layer4 of the {backbone_name}, freeze the previous ones")
+        if train_all_layers:
+            logging.debug(f"Train all layers of the {backbone_name}")
+        else:
+            for name, child in backbone.named_children():
+                if name == "layer3":  # Freeze layers before conv_3
+                    break
+                for params in child.parameters():
+                    params.requires_grad = False
+            logging.debug(f"Train only layer3 and layer4 of the {backbone_name}, freeze the previous ones")
+
         layers = list(backbone.children())[:-2]  # Remove avg pooling and FC layer
     
     elif backbone_name == "VGG16":
         layers = list(backbone.features.children())[:-2]  # Remove avg pooling and FC layer
-        for layer in layers[:-5]:
-            for p in layer.parameters():
-                p.requires_grad = False
-        logging.debug("Train last layers of the VGG-16, freeze the previous ones")
+        if train_all_layers:
+            logging.debug("Train all layers of the VGG-16")
+        else:
+            for layer in layers[:-5]:
+                for p in layer.parameters():
+                    p.requires_grad = False
+            logging.debug("Train last layers of the VGG-16, freeze the previous ones")
     
     backbone = torch.nn.Sequential(*layers)
     
