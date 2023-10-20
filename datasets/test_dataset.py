@@ -10,8 +10,9 @@ import datasets.dataset_utils as dataset_utils
 
 
 class TestDataset(data.Dataset):
-    def __init__(self, args, dataset_folder, database_folder="database",
-                 queries_folder="queries", positive_dist_threshold=25):
+    def __init__(self, dataset_folder, database_folder="database",
+                 queries_folder="queries", positive_dist_threshold=25,
+                 image_size=512, resize_test_imgs=False):
         self.database_folder = dataset_folder + "/" + database_folder
         self.queries_folder = dataset_folder + "/" + queries_folder
         self.database_paths = dataset_utils.read_images_paths(self.database_folder, get_abs_path=True)
@@ -37,8 +38,9 @@ class TestDataset(data.Dataset):
         self.queries_num = len(self.queries_paths)
 
         transforms_list = []
-        if args.resize_test_imgs:
-            transforms_list += [transforms.Resize(args.image_size, antialias=True)]
+        if resize_test_imgs:
+            # Resize to image_size along the shorter side while maintaining aspect ratio
+            transforms_list += [transforms.Resize(image_size, antialias=True)]
         transforms_list += [
                 transforms.ToTensor(),
                 transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),

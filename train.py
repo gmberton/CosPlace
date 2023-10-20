@@ -56,9 +56,11 @@ logging.info(f"Using {len(groups)} groups")
 logging.info(f"The {len(groups)} groups have respectively the following number of classes {[len(g) for g in groups]}")
 logging.info(f"The {len(groups)} groups have respectively the following number of images {[g.get_images_num() for g in groups]}")
 
-val_ds = TestDataset(args, args.val_set_folder, positive_dist_threshold=args.positive_dist_threshold)
-test_ds = TestDataset(args, args.test_set_folder, queries_folder="queries_v1",
-                      positive_dist_threshold=args.positive_dist_threshold)
+val_ds = TestDataset(args.val_set_folder, positive_dist_threshold=args.positive_dist_threshold,
+                     image_size=args.image_size, resize_test_imgs=args.resize_test_imgs)
+test_ds = TestDataset(args.test_set_folder, queries_folder="queries_v1",
+                      positive_dist_threshold=args.positive_dist_threshold,
+                      image_size=args.image_size, resize_test_imgs=args.resize_test_imgs)
 logging.info(f"Validation set: {val_ds}")
 logging.info(f"Test set: {test_ds}")
 
