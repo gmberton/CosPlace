@@ -16,6 +16,8 @@ def parse_arguments(is_training: bool = True):
                         choices=["VGG16", "ResNet18", "ResNet50", "ResNet101", "ResNet152"], help="_")
     parser.add_argument("--fc_output_dim", type=int, default=512,
                         help="Output dimension of final fully connected layer")
+    parser.add_argument("--train_all_layers", default=False, action="store_true",
+                        help="If true, train all layers of the backbone")
     # Training parameters
     parser.add_argument("--use_amp16", action="store_true",
                         help="use Automatic Mixed Precision")
@@ -27,6 +29,11 @@ def parse_arguments(is_training: bool = True):
     parser.add_argument("--iterations_per_epoch", type=int, default=10000, help="_")
     parser.add_argument("--lr", type=float, default=0.00001, help="_")
     parser.add_argument("--classifiers_lr", type=float, default=0.01, help="_")
+    parser.add_argument("--image_size", type=int, default=512,
+                        help="Width and height of training images (1:1 aspect ratio))")
+    parser.add_argument("--resize_test_imgs", default=False, action="store_true",
+                        help="If the test images should be resized to image_size along"
+                          "the shorter side while maintaining aspect ratio")
     # Data augmentation
     parser.add_argument("--brightness", type=float, default=0.7, help="_")
     parser.add_argument("--contrast", type=float, default=0.7, help="_")

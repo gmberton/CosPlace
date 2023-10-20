@@ -30,7 +30,7 @@ logging.info(f"Arguments: {args}")
 logging.info(f"The outputs are being saved in {args.output_folder}")
 
 #### Model
-model = cosplace_network.GeoLocalizationNet(args.backbone, args.fc_output_dim)
+model = cosplace_network.GeoLocalizationNet(args.backbone, args.fc_output_dim, args.train_all_layers)
 
 logging.info(f"There are {torch.cuda.device_count()} GPUs and {multiprocessing.cpu_count()} CPUs.")
 
@@ -56,9 +56,11 @@ logging.info(f"Using {len(groups)} groups")
 logging.info(f"The {len(groups)} groups have respectively the following number of classes {[len(g) for g in groups]}")
 logging.info(f"The {len(groups)} groups have respectively the following number of images {[g.get_images_num() for g in groups]}")
 
-val_ds = TestDataset(args.val_set_folder, positive_dist_threshold=args.positive_dist_threshold)
+val_ds = TestDataset(args.val_set_folder, positive_dist_threshold=args.positive_dist_threshold,
+                     image_size=args.image_size, resize_test_imgs=args.resize_test_imgs)
 test_ds = TestDataset(args.test_set_folder, queries_folder="queries_v1",
-                      positive_dist_threshold=args.positive_dist_threshold)
+                      positive_dist_threshold=args.positive_dist_threshold,
+                      image_size=args.image_size, resize_test_imgs=args.resize_test_imgs)
 logging.info(f"Validation set: {val_ds}")
 logging.info(f"Test set: {test_ds}")
 
@@ -86,7 +88,7 @@ if args.augmentation_device == "cuda":
                                                     contrast=args.contrast,
                                                     saturation=args.saturation,
                                                     hue=args.hue),
-            augmentations.DeviceAgnosticRandomResizedCrop([512, 512],
+            augmentations.DeviceAgnosticRandomResizedCrop([args.image_size, args.image_size],
                                                           scale=[1-args.random_resized_crop, 1]),
             T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
