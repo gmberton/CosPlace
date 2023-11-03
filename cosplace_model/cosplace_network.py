@@ -15,8 +15,12 @@ CHANNELS_NUM_IN_LAST_CONV = {
     "ResNet152": 2048,
     "VGG16": 512,
     "EfficientNet_B0": 1280,
+    "EfficientNet_B1": 1280,
     "EfficientNet_B2": 1408,
+    "EfficientNet_B3": 1536,
     "EfficientNet_B4": 1792,
+    "EfficientNet_B5": 2048,
+    "EfficientNet_B6": 2304,
     "EfficientNet_B7": 2560,
 }
 
@@ -97,7 +101,6 @@ def get_backbone(backbone_name : str, train_all_layers : bool) -> Tuple[torch.nn
         layers = list(backbone.children())[:-2] # Remove avg pooling and FC layer
     
     backbone = torch.nn.Sequential(*layers)
-    
     features_dim = CHANNELS_NUM_IN_LAST_CONV[backbone_name]
     
     return backbone, features_dim

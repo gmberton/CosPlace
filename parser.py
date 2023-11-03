@@ -15,8 +15,9 @@ def parse_arguments(is_training: bool = True):
     parser.add_argument("--backbone", type=str, default="ResNet18",
                         choices=["VGG16",
                                  "ResNet18", "ResNet50", "ResNet101", "ResNet152",
-                                 "EfficientNet_B0", "EfficientNet_B2",
-                                 "EfficientNet_B4", "EfficientNet_B7"], help="_")
+                                 "EfficientNet_B0", "EfficientNet_B1", "EfficientNet_B2",
+                                 "EfficientNet_B3", "EfficientNet_B4", "EfficientNet_B5", 
+                                 "EfficientNet_B6", "EfficientNet_B7"], help="_")
     parser.add_argument("--fc_output_dim", type=int, default=512,
                         help="Output dimension of final fully connected layer")
     parser.add_argument("--train_all_layers", default=False, action="store_true",
