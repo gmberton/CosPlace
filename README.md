@@ -66,6 +66,24 @@ You can test a trained model as such
 
 You can download plenty of trained models below.
 
+
+### Visualize predictions
+
+Predictions can be easily visualized through the `num_preds_to_save` parameter. For example running this
+
+```
+python3 eval.py --backbone ResNet50 --fc_output_dim 512 --resume_model path/to/best_model.pth \
+    --num_preds_to_save=3 --exp_name=cosplace_on_stlucia
+```
+will generate under the path `./logs/cosplace_on_stlucia/*/preds` images such as
+
+<p float="left">
+  <img src="https://raw.githubusercontent.com/gmberton/VPR-methods-evaluation/master/images/pred.jpg"  height="200"/>
+</p>
+
+Given that saving predictions for each query might take long, you can also pass the parameter `--save_only_wrong_preds` which will save only predictions for wrongly predicted queries (i.e. where the first prediction is wrong), which should be the most interesting failure cases.
+
+
 ## Trained Models
 
 We now have all our trained models on [PyTorch Hub](https://pytorch.org/docs/stable/hub.html), so that you can use them in any codebase without cloning this repository simply like this
