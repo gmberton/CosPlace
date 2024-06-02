@@ -28,7 +28,7 @@ class DeviceAgnosticRandomResizedCrop(T.RandomResizedCrop):
     def forward(self, images: torch.Tensor) -> torch.Tensor:
         assert len(images.shape) == 4, f"images should be a batch of images, but it has shape {images.shape}"
         B, C, H, W = images.shape
-        # Applies a different color jitter to each image
+        # Applies a different RandomResizedCrop to each image
         random_resized_crop = super(DeviceAgnosticRandomResizedCrop, self).forward
         augmented_images = [random_resized_crop(img).unsqueeze(0) for img in images]
         augmented_images = torch.cat(augmented_images)
