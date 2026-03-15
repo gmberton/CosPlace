@@ -166,13 +166,13 @@ Parts of this repo are inspired by the following repositories:
 
 ## Cite
 Here is the bibtex to cite our paper
-```
-@InProceedings{Berton_CVPR_2022_CosPlace,
+```bibtex
+@inproceedings{Berton_CVPR_2022_CosPlace,
     author    = {Berton, Gabriele and Masone, Carlo and Caputo, Barbara},
     title     = {Rethinking Visual Geo-Localization for Large-Scale Applications},
-    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    booktitle = {IEEE/CVF Conference on Computer Vision and Pattern Recognition},
     month     = {June},
     year      = {2022},
-    pages     = {4878-4888}
+    pages     = {4878--4888}
 }
 ```
